@@ -31,7 +31,6 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent it = null;
-
                 switch(menuItem.getItemId()){
                     case R.id.action_facebook:
                         it = new Intent(Intent.ACTION_VIEW);
@@ -64,7 +63,8 @@ public class FirstActivity extends AppCompatActivity {
         mToolbarBottom.findViewById(R.id.iv_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(FirstActivity.this,"Settings pressed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FirstActivity.this,"Settings pressed", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MenuActivity.class ));
             }
         });
     }

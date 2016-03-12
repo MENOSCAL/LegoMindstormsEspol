@@ -1,5 +1,7 @@
 package espol.fiec.edu.lego;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -79,6 +81,7 @@ public class MenuActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent it = null;
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
@@ -89,6 +92,8 @@ public class MenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            it = new Intent(Intent.ACTION_VIEW);
+            it.setData(Uri.parse("https://www.facebook.com/LEGO"));
 
         } else if (id == R.id.nav_send) {
 
