@@ -3,6 +3,7 @@ package espol.fiec.edu.lego;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -30,6 +31,9 @@ import com.mikepenz.materialdrawer.model.interfaces.OnCheckedChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import espol.fiec.edu.lego.domain.Robot;
+import espol.fiec.edu.lego.fragments.RobotFragment;
 
 public class FirstActivity extends AppCompatActivity {
 
@@ -102,6 +106,17 @@ public class FirstActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MenuActivity.class ));
             }
         });
+
+        //FRAGMENT
+        RobotFragment frag = (RobotFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+        if(frag == null){
+            frag = new RobotFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.rl_fragment_container,frag, "mainFrag");
+            ft.commit();
+        }
+
+
 
         //if you want to update the items at a later time it is recommended to keep it in a variable
         PrimaryDrawerItem Pitem1 = new PrimaryDrawerItem().withName("Robots Deportivos").withIcon(getResources().getDrawable(R.drawable.robot_selected_1));
@@ -256,7 +271,7 @@ public class FirstActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-/*
+
     public List<Robot> getSetCarList(int qtd){
         String[] models = new String[]{"Robot1", "Robot2"};
         String[] brands = new String[]{"Robot con luces", " Robot Ultrasonido"};
@@ -278,5 +293,5 @@ public class FirstActivity extends AppCompatActivity {
             listAux.add(c);
         }
         return(listAux);
-    }*/
+    }
 }
