@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
@@ -44,6 +45,7 @@ public class FirstActivity extends AppCompatActivity {
     private Drawer navigationDrawerLeft, navigationDrawerRight;
     private AccountHeader headerNavigationLeft;
     private int mPositionClicked;
+    private FloatingActionMenu fab;
 
     private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener(){
 
@@ -52,7 +54,6 @@ public class FirstActivity extends AppCompatActivity {
             Toast.makeText(FirstActivity.this,"onCheckedChanged: "+(isChecked ? "true" : "false"), Toast.LENGTH_SHORT).show();
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +66,16 @@ public class FirstActivity extends AppCompatActivity {
         mToolbar.setLogo(R.drawable.ic_launcher);
         setSupportActionBar(mToolbar);
 
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(false);*/
+/*
         mToolbarBottom = (Toolbar) findViewById(R.id.inc_tb_bottom);
         mToolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent it = null;
-                switch(menuItem.getItemId()){
+
+                switch (menuItem.getItemId()) {
                     case R.id.action_facebook:
                         it = new Intent(Intent.ACTION_VIEW);
                         it.setData(Uri.parse("http://www.facebook.com"));
@@ -97,16 +102,17 @@ public class FirstActivity extends AppCompatActivity {
                 return true;
             }
         });
+*/
+/*
         mToolbarBottom.inflateMenu(R.menu.menu_bottom);
 
         mToolbarBottom.findViewById(R.id.iv_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(FirstActivity.this,"Settings pressed", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MenuActivity.class ));
+                Toast.makeText(FirstActivity.this, "Settings pressed", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
         //FRAGMENT
         RobotFragment frag = (RobotFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
         if(frag == null){
@@ -115,7 +121,6 @@ public class FirstActivity extends AppCompatActivity {
             ft.replace(R.id.rl_fragment_container,frag, "mainFrag");
             ft.commit();
         }
-
 
 
         //if you want to update the items at a later time it is recommended to keep it in a variable
@@ -239,6 +244,9 @@ public class FirstActivity extends AppCompatActivity {
                         new ToggleDrawerItem().withName("Noticias").withChecked(true).withOnCheckedChangeListener(mOnCheckedChangeListener)
                 )
                 .build();
+
+        fab = (FloatingActionMenu) findViewById(R.id.fab);
+
     }
 
     private int getCorrectcDrawerIcon(int position, boolean isSelecetd){
@@ -293,5 +301,26 @@ public class FirstActivity extends AppCompatActivity {
             listAux.add(c);
         }
         return(listAux);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        outState = navigationDrawerRight.saveInstanceState(outState);
+        outState = navigationDrawerLeft.saveInstanceState(outState);
+        outState = headerNavigationLeft.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(navigationDrawerLeft.isDrawerOpen()){
+            navigationDrawerLeft.closeDrawer();
+        }
+        else if(fab.isOpened()){
+            fab.close(true);
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }
