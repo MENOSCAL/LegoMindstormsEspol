@@ -33,36 +33,52 @@ import com.mikepenz.materialdrawer.model.interfaces.OnCheckedChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import espol.fiec.edu.lego.domain.Person;
 import espol.fiec.edu.lego.domain.Robot;
 import espol.fiec.edu.lego.fragments.RobotFragment;
 
 public class FirstActivity extends AppCompatActivity {
 
-    private static String TAG = "LOG";
+    //private static String TAG = "LOG";
     private Toolbar mToolbar;
-    private Toolbar mToolbarBottom;
+    //private Toolbar mToolbarBottom;
 
     private Drawer navigationDrawerLeft, navigationDrawerRight;
     private AccountHeader headerNavigationLeft;
-    private int mPositionClicked;
+    //private int mPositionClicked;
     private FloatingActionMenu fab;
 
+    private int mItemDrawerSelected;
+    private List<PrimaryDrawerItem> listCategorias;
+    private List<Person> listProfile;
+    private List<Robot> listRobots;
+
+    /*
     private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener(){
 
         @Override
         public void onCheckedChanged(IDrawerItem drawerItem, CompoundButton buttonView, boolean isChecked) {
             Toast.makeText(FirstActivity.this,"onCheckedChanged: "+(isChecked ? "true" : "false"), Toast.LENGTH_SHORT).show();
         }
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
+        if(savedInstanceState != null){
+            mItemDrawerSelected = savedInstanceState.getInt("mItemDrawerSelected", 0);
+            listRobots = savedInstanceState.getParcelableArrayList("listRobots");
+        }
+        else{
+            listRobots = getSetRobotList();
+        }
+
+
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
         mToolbar.setTitle(" APP LEGO");
-        mToolbar.setSubtitle(" Robots");
+        //mToolbar.setSubtitle(" Robots");
         mToolbar.setLogo(R.drawable.ic_launcher);
         setSupportActionBar(mToolbar);
 
@@ -124,7 +140,7 @@ public class FirstActivity extends AppCompatActivity {
 
 
         //if you want to update the items at a later time it is recommended to keep it in a variable
-        PrimaryDrawerItem Pitem1 = new PrimaryDrawerItem().withName("Robots Deportivos").withIcon(getResources().getDrawable(R.drawable.robot_selected_1));
+        /*PrimaryDrawerItem Pitem1 = new PrimaryDrawerItem().withName("Robots Deportivos").withIcon(getResources().getDrawable(R.drawable.robot_selected_1));
         PrimaryDrawerItem Pitem2 = new PrimaryDrawerItem().withName("Robots de Lujo").withIcon(getResources().getDrawable(R.drawable.robot_2));
         PrimaryDrawerItem Pitem3 = new PrimaryDrawerItem().withName("Robots Coleccionables").withIcon(getResources().getDrawable(R.drawable.robot_3));
         PrimaryDrawerItem Pitem4 = new PrimaryDrawerItem().withName("Robots Populares").withIcon(getResources().getDrawable(R.drawable.robot_4));
@@ -133,10 +149,10 @@ public class FirstActivity extends AppCompatActivity {
         SecondaryDrawerItem Sitem2 = new SecondaryDrawerItem().withName("Robots de Lujo").withIcon(getResources().getDrawable(R.drawable.robot_selected_2));
         SecondaryDrawerItem Sitem3 = new SecondaryDrawerItem().withName("Robots Coleccionables").withIcon(getResources().getDrawable(R.drawable.robot_selected_3));
         SecondaryDrawerItem Sitem4 = new SecondaryDrawerItem().withName("Robots Populares").withIcon(getResources().getDrawable(R.drawable.robot_selected_4));
-
+*/
         //NAVIGATION DRAWER
         // END - RIGHT
-        navigationDrawerRight = new DrawerBuilder()
+        /*navigationDrawerRight = new DrawerBuilder()
                 .withActivity(this)
                         //.withToolbar(mToolbar)
                 .withDisplayBelowToolbar(true)
@@ -163,7 +179,7 @@ public class FirstActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         Sitem3, Sitem4
                 )
-                .build();
+                .build();*/
 
         // Create the AccountHeader
         headerNavigationLeft = new AccountHeaderBuilder()
@@ -171,23 +187,33 @@ public class FirstActivity extends AppCompatActivity {
                 .withCompactStyle(false)
                 .withSavedInstance(savedInstanceState)
                 .withThreeSmallProfileImages(true)
-                .withHeaderBackground(R.drawable.portada)
+                //.withHeaderBackground(R.drawable.portada)
                 .withTextColorRes(R.color.black)
-                .addProfiles(
+                /*.addProfiles(
                         new ProfileDrawerItem().withName("Person One").withEmail("person1@gmail.com").withIcon(getResources().getDrawable(R.drawable.person_1)),
                         new ProfileDrawerItem().withName("Person Two").withEmail("person2@gmail.com").withIcon(getResources().getDrawable(R.drawable.person_2)),
                         new ProfileDrawerItem().withName("Person Three").withEmail("person3@gmail.com").withIcon(getResources().getDrawable(R.drawable.person_3)),
                         new ProfileDrawerItem().withName("Person Four").withEmail("person4@gmail.com").withIcon(getResources().getDrawable(R.drawable.person_4))
-                )
+                )*/
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        Toast.makeText(FirstActivity.this,"onProfileChanged: "+profile.getName(),Toast.LENGTH_SHORT).show();
+                        Person aux = getPersonByEmail(listProfile,(ProfileDrawerItem) profile);
+                        headerNavigationLeft.setBackgroundRes(aux.getBackground());
+                        //Toast.makeText(FirstActivity.this,"onProfileChanged: "+profile.getName(),Toast.LENGTH_SHORT).show();
                         // headerNavigationLeft.setBackgroundRes(R.drawable.vyron);
-                        return false;
+                        return true;
                     }
                 })
                 .build();
+
+        listProfile = getSetProfileList();
+        if (listProfile != null && listProfile.size() > 0){
+            for (int i=0; i < listProfile.size(); i++){
+                headerNavigationLeft.addProfile(listProfile.get(i).getProfile(), i);
+            }
+            headerNavigationLeft.setBackgroundRes(listProfile.get(0).getBackground());
+        }
 
         //create the drawer and remember the `Drawer` result object
         navigationDrawerLeft = new DrawerBuilder()
@@ -195,7 +221,7 @@ public class FirstActivity extends AppCompatActivity {
                 .withToolbar(mToolbar)
                 .withDisplayBelowToolbar(false)
                 .withActionBarDrawerToggleAnimated(true)
-                .withDrawerGravity(Gravity.LEFT)
+                .withDrawerGravity(Gravity.START)
                 .withSavedInstance(savedInstanceState)
                 .withSelectedItem(0)
                 .withActionBarDrawerToggle(true)
@@ -209,8 +235,44 @@ public class FirstActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
+
+                        RobotFragment frag = null;
+                        mItemDrawerSelected = position;
+
+                        if (position == 0) { //Todos los Bloques
+                            frag = new RobotFragment();
+                            frag.setGroup(0);
+                            mToolbar.setTitle(listCategorias.get(0).getName());
+                        } else if (position == 1) { //Bloques de Acción
+                            frag = new RobotFragment();
+                            frag.setGroup(1);
+                            mToolbar.setTitle(listCategorias.get(1).getName());
+                        } else if (position == 2) { //Bloques de Flujo
+                            frag = new RobotFragment();
+                            frag.setGroup(2);
+                            mToolbar.setTitle(listCategorias.get(2).getName());
+                        } else if (position == 3) { //Bloques de Operaciones
+                            frag = new RobotFragment();
+                            frag.setGroup(3);
+                            mToolbar.setTitle(listCategorias.get(3).getName());
+                        } else if (position == 4) { //Bloques de Sensores
+                            frag = new RobotFragment();
+                            frag.setGroup(4);
+                            mToolbar.setTitle(listCategorias.get(4).getName());
+                        } else if (position == 5) { //Bloques Avanzados
+                            frag = new RobotFragment();
+                            frag.setGroup(5);
+                            mToolbar.setTitle(listCategorias.get(5).getName());
+                        }
+
+                        listRobots = getSetRobotList();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.rl_fragment_container, frag, "mainFrag");
+                        ft.commit();
+
+
                         //Toast.makeText(FirstActivity.this, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
-                        for (int count = 0, tam = navigationDrawerLeft.getDrawerItems().size(); count < tam; count++) {
+                        /*for (int count = 0, tam = navigationDrawerLeft.getDrawerItems().size(); count < tam; count++) {
                             if (count == mPositionClicked && mPositionClicked <= 3) {
                                 PrimaryDrawerItem aux = (PrimaryDrawerItem) navigationDrawerLeft.getDrawerItems().get(count);
                                 aux.setIcon(getResources().getDrawable(getCorrectcDrawerIcon(count, false)));
@@ -224,10 +286,11 @@ public class FirstActivity extends AppCompatActivity {
 
                         mPositionClicked = position;
                         navigationDrawerLeft.getAdapter().notifyDataSetChanged();
-
+                        */
                         return false;
                     }
                 })
+
                 .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
@@ -235,33 +298,45 @@ public class FirstActivity extends AppCompatActivity {
                         return false;
                     }
                 })
-                .addDrawerItems(
+                /*.addDrawerItems(
                         Pitem1, Pitem2,
                         // new DividerDrawerItem(),
                         Pitem3, Pitem4,
                         new SectionDrawerItem().withName("Configuraciones"),
                         new SwitchDrawerItem().withName("Notificaciones").withChecked(true).withOnCheckedChangeListener(mOnCheckedChangeListener),
                         new ToggleDrawerItem().withName("Noticias").withChecked(true).withOnCheckedChangeListener(mOnCheckedChangeListener)
-                )
+                )*/
                 .build();
+
+        listCategorias = getSetCategoryList();
+        mToolbar.setTitle(listCategorias.get(0).getName());
+
+        if(listCategorias != null && listCategorias.size() > 0){
+            for (int i = 0; i < listCategorias.size(); i++){
+                navigationDrawerLeft.addItem(listCategorias.get(i));
+            }
+            //navigationDrawerLeft.setSelection(mItemDrawerSelected);
+        }
 
         fab = (FloatingActionMenu) findViewById(R.id.fab);
 
     }
 
-    private int getCorrectcDrawerIcon(int position, boolean isSelecetd){
-        switch(position){
-            case 0:
-                return( isSelecetd ? R.drawable.robot_selected_1 : R.drawable.robot_1);
-            case 1:
-                return( isSelecetd ? R.drawable.robot_selected_2 : R.drawable.robot_2);
-            case 2:
-                return( isSelecetd ? R.drawable.robot_selected_3 : R.drawable.robot_3);
-            case 3:
-                return( isSelecetd ? R.drawable.robot_selected_4 : R.drawable.robot_4);
+/*
+        private int getCorrectcDrawerIcon(int position, boolean isSelecetd){
+            switch(position){
+                case 0:
+                    return( isSelecetd ? R.drawable.robot_selected_1 : R.drawable.robot_1);
+                case 1:
+                    return( isSelecetd ? R.drawable.robot_selected_2 : R.drawable.robot_2);
+                case 2:
+                    return( isSelecetd ? R.drawable.robot_selected_3 : R.drawable.robot_3);
+                case 3:
+                    return( isSelecetd ? R.drawable.robot_selected_4 : R.drawable.robot_4);
+            }
+            return(0);
         }
-        return(0);
-    }
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -280,32 +355,132 @@ public class FirstActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public List<Robot> getSetCarList(int qtd){
-        String[] models = new String[]{"Robot1", "Robot2"};
-        String[] brands = new String[]{"Robot con luces", " Robot Ultrasonido"};
-        //      int[] categories = new int[]{2, 1, 2, 1, 1, 4, 3, 2, 4, 1};
-        int[] photos = new int[]{R.drawable.robot1, R.drawable.robot2};
-        //    String[] urlPhotos = new String[]{"gallardo.jpg", "vyron.jpg", "corvette.jpg", "paganni_zonda.jpg", "porsche_911.jpg", "bmw_720.jpg", "db77.jpg", "mustang.jpg", "camaro.jpg", "ct6.jpg"};
-        //  String description = "Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.";
+
+    //CATEGORIA
+    public List<PrimaryDrawerItem> getSetCategoryList(){
+        String[] names = new String[]{"ALL Bloques", "Bloques de Acción","Bloques de Flujo", "Bloques de Operaciones",
+                "Bloques de Sensores","Bloques Avanzados"};
+        int[] icons = new int[]{R.drawable.robot_1,R.drawable.robot_1,R.drawable.robot_2,R.drawable.robot_3,
+                R.drawable.robot_4,R.drawable.robot_4};
+        int[] iconsSelected = new int[]{R.drawable.robot_selected_1,R.drawable.robot_selected_1,R.drawable.robot_selected_2,
+                R.drawable.robot_selected_3,R.drawable.robot_selected_4,R.drawable.robot_selected_4};
+        List<PrimaryDrawerItem> list = new ArrayList<>();
+
+        for(int i = 0; i < names.length; i++){
+            PrimaryDrawerItem aux = new PrimaryDrawerItem();
+            aux.setName(names[i]);
+            aux.setIcon(getResources().getDrawable(icons[i]));
+            aux.setTextColor(getResources().getColor(R.color.colorPrimarytext));
+            aux.setSelectedIcon(getResources().getDrawable(iconsSelected[i]));
+            aux.setSelectedTextColor(getResources().getColor(R.color.colorPrimary));
+
+            list.add(aux);
+        }
+        return(list);
+    }
+
+    //PERSON
+    private Person getPersonByEmail(List<Person> list, ProfileDrawerItem p){
+        Person aux = null;
+        for (int i = 0; i < list.size(); i++){
+            if (list.get(i).getProfile().getEmail().equalsIgnoreCase(p.getEmail())){
+                aux = list.get(i);
+                break;
+            }
+        }
+        return (aux);
+    }
+
+    private List<Person> getSetProfileList(){
+        String[] names = new String[]{"User 1"};
+        String[] emails = new String[]{"emailUser_1@gmail.com"};
+        int[] photos = new int[]{R.drawable.person_1};
+        int[] background = new int[]{R.drawable.portada};
+        List<Person> list = new ArrayList<>();
+
+        for(int i=0; i < names.length; i++){
+            ProfileDrawerItem aux = new ProfileDrawerItem();
+            aux.setName(names[i]);
+            aux.setEmail(emails[i]);
+            aux.setIcon(getResources().getDrawable(photos[i]));
+
+            Person p = new Person();
+            p.setProfile(aux);
+            p.setBackground(background[i]);
+
+            list.add(p);
+        }
+        return (list);
+    }
+
+    //Robot
+    public List<Robot> getSetRobotList(int qtd){
+        return(getSetRobotList(qtd, 0));
+    }
+
+    public List<Robot> getSetRobotList(){
+        int category=0;
+        String[] models = new String[]{"Accion de Bloques", "Control de Flujo","Operaciones con Datos","Sensores","Avanzados"};
+        String[] brands = new String[]{"Accion", "Flujo","Operación","Sensor","Avanzado"};
+        int[] categories = new int[]{1,2,3,4,5};
+        int[] photos = new int[]{R.drawable.accion, R.drawable.flujo,R.drawable.operacion,R.drawable.sensor,R.drawable.avanzado};
+        String[] description = new String[]{"Description 1","Description 2","Description 3","Description 4","Description 5"};
         List<Robot> listAux = new ArrayList<>();
 
-        for(int i = 0; i < qtd; i++){
-            Robot c = new Robot( models[i % models.length], brands[ i % brands.length], photos[i % models.length] );
-//            c.setDescription(description);
-//            c.setCategory( categories[ i % brands.length ] );
-//            c.setTel("33221155");
+        for(int i = 0; i < models.length; i++){
+            Robot c = new Robot( models[i % models.length], brands[ i % brands.length], photos[i % photos.length],description[i % description.length] );
+            c.setCategory(categories[i % brands.length]);
+            //c.selTel("33221155");
 
-//            if(category != 0 && c.getCategory() != category){
-//                continue;
-//            }
+            if(category != 0 && c.getCategory() != category){
+                continue;
+            }
             listAux.add(c);
         }
         return(listAux);
     }
 
+    public List<Robot> getSetRobotList(int qtd, int category){
+        String[] models = new String[]{"Accion de Bloques", "Control de Flujo","Operaciones con Datos","Sensores","Avanzados"};
+        String[] brands = new String[]{"Accion", "Flujo","Operación","Sensor","Avanzado"};
+        int[] categories = new int[]{1,2,3,4,5};
+        int[] photos = new int[]{R.drawable.accion, R.drawable.flujo,R.drawable.operacion,R.drawable.sensor,R.drawable.avanzado};
+        String[] description = new String[]{"Description 1","Description 2","Description 3","Description 4","Description 5"};
+        List<Robot> listAux = new ArrayList<>();
+
+        for(int i = 0; i < qtd; i++){
+            Robot c = new Robot( models[i % models.length], brands[ i % brands.length], photos[i % photos.length],description[i % description.length] );
+            c.setCategory(categories[i % brands.length]);
+            //c.selTel("33221155");
+
+            if(category != 0 && c.getCategory() != category){
+                continue;
+            }
+            listAux.add(c);
+        }
+        return(listAux);
+    }
+
+    public List<Robot> getRobotsByCategory(int category){
+        List<Robot> listAux = new ArrayList<>();
+        for(int i = 0; i < listRobots.size(); i++){
+            if(category != 0 && listRobots.get(i).getCategory() != category){
+                continue;
+            }
+            listAux.add(listRobots.get(i));
+        }
+        return(listAux);
+    }
+    public List<Robot> getListRobots(){
+        return (listRobots);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState){
-        outState = navigationDrawerRight.saveInstanceState(outState);
+        outState.putInt("mItemDrawerSelected", mItemDrawerSelected);
+        outState.putParcelableArrayList("ListRobots", (ArrayList<Robot>) listRobots);
+
+        //outState = navigationDrawerRight.saveInstanceState(outState);
         outState = navigationDrawerLeft.saveInstanceState(outState);
         outState = headerNavigationLeft.saveInstanceState(outState);
         super.onSaveInstanceState(outState);

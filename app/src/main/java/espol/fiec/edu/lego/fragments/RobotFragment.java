@@ -21,11 +21,13 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import espol.fiec.edu.lego.FirstActivity;
 import espol.fiec.edu.lego.MenuActivity;
 import espol.fiec.edu.lego.R;
+import espol.fiec.edu.lego.RobotActivity;
 import espol.fiec.edu.lego.adapters.RobotAdapter;
 import espol.fiec.edu.lego.domain.Robot;
 import espol.fiec.edu.lego.interfaces.RecyclerViewOnClickListenerHack;
@@ -35,20 +37,34 @@ import espol.fiec.edu.lego.interfaces.RecyclerViewOnClickListenerHack;
  * Created by mm on 10/03/2016.
  */
 public class RobotFragment extends Fragment implements RecyclerViewOnClickListenerHack, View.OnClickListener {
-    private static final String TAG = "LOG";
-    private RecyclerView mRecyclerView;
-    private List<Robot> mList;
+    protected static final String TAG = "LOG";
+    protected RecyclerView mRecyclerView;
+    protected List<Robot> mList;
     //private FloatingActionButton fab;
     //private ActionButton fab;
-    private FloatingActionMenu fab;
+    protected FloatingActionMenu fab;
+    private int group;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null){
+            mList = savedInstanceState.getParcelableArrayList("mList");
+        }
+        else{
+            mList = ((FirstActivity) getActivity()).getRobotsByCategory(group);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_robot, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -58,10 +74,9 @@ public class RobotFragment extends Fragment implements RecyclerViewOnClickListen
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy > 0){
+                if (dy > 0) {
                     fab.hideMenuButton(true);
-                }
-                else{
+                } else {
                     fab.showMenuButton(true);
                 }
 
@@ -79,11 +94,12 @@ public class RobotFragment extends Fragment implements RecyclerViewOnClickListen
 
                 if (mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1) {
                     //if (mList.size() == max + 1) {
-                    List<Robot> listAux = ((FirstActivity) getActivity()).getSetCarList(2);
+                    /*List<Robot> listAux = ((FirstActivity) getActivity()).getSetRobotList(2, 0);
+                    ((FirstActivity) getActivity()).getListRobots().addAll(listAux);
 
                     for (int i = 0; i < listAux.size(); i++) {
                         adapter.addListItem(listAux.get(i), mList.size());
-                    }
+                    }*/
                 }
             }
         });
@@ -102,28 +118,29 @@ public class RobotFragment extends Fragment implements RecyclerViewOnClickListen
         llm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mRecyclerView.setLayoutManager(llm);*/
 
-        mList =  ((FirstActivity)getActivity()).getSetCarList(2);
+        //mList =  ((FirstActivity)getActivity()).getSetRobotList(2);
         RobotAdapter adapter = new RobotAdapter(getActivity(), mList);
         //adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter(adapter);
+        setFloatingActionButton();
 
-        fab = (FloatingActionMenu) getActivity().findViewById(R.id.fab);
+        /*fab = (FloatingActionMenu) getActivity().findViewById(R.id.fab);
         fab.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean opened) {
                 Toast.makeText(getActivity(), "Is menu opened? "+(opened ? "true" : "false" ), Toast.LENGTH_SHORT).show();
             }
         });
-        fab.setClosedOnTouchOutside(true);
+        fab.setClosedOnTouchOutside(true);*/
 
-        FloatingActionButton fab1 = (FloatingActionButton) getActivity().findViewById(R.id.fab1);
-        FloatingActionButton fab2 = (FloatingActionButton) getActivity().findViewById(R.id.fab2);
+        //FloatingActionButton fab1 = (FloatingActionButton) getActivity().findViewById(R.id.fab1);
+        //FloatingActionButton fab2 = (FloatingActionButton) getActivity().findViewById(R.id.fab2);
         //FloatingActionButton fab3 = (FloatingActionButton) getActivity().findViewById(R.id.fab3);
         //FloatingActionButton fab4 = (FloatingActionButton) getActivity().findViewById(R.id.fab4);
         //FloatingActionButton fab5 = (FloatingActionButton) getActivity().findViewById(R.id.fab5);
 
-        fab1.setOnClickListener(this);
-        fab2.setOnClickListener(this);
+        //fab1.setOnClickListener(this);
+        //fab2.setOnClickListener(this);
         //fab3.setOnClickListener(this);
         //fab4.setOnClickListener(this);
         //fab5.setOnClickListener(this);
@@ -193,9 +210,36 @@ public class RobotFragment extends Fragment implements RecyclerViewOnClickListen
         return view;
     }
 
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public void setFloatingActionButton(){
+        fab = (FloatingActionMenu) getActivity().findViewById(R.id.fab);
+        fab.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean opened) {
+                Toast.makeText(getActivity(), "Is menu opened? "+(opened ? "true" : "false" ), Toast.LENGTH_SHORT).show();
+            }
+        });
+        fab.showMenuButton(true);
+        fab.setClosedOnTouchOutside(true);
+
+        FloatingActionButton fab1 = (FloatingActionButton) getActivity().findViewById(R.id.fab1);
+        FloatingActionButton fab2 = (FloatingActionButton) getActivity().findViewById(R.id.fab2);
+
+        fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
+    }
+
     @Override
     public void onClickListener(View view, int position) {
-        Toast.makeText(getActivity(),"onClickListener(): " + position, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getActivity(), RobotActivity.class);
+        intent.putExtra("robot", mList.get(position));
+        getActivity().startActivity(intent);
+
+        //Toast.makeText(getActivity(),"onClickListener(): " + position, Toast.LENGTH_SHORT).show();
 
      /*   RobotAdapter adapter = (RobotAdapter) mRecyclerView.getAdapter();
         adapter.removeListItem(position);*/
@@ -284,5 +328,12 @@ public class RobotFragment extends Fragment implements RecyclerViewOnClickListen
 
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("mList", (ArrayList<Robot>) mList);
     }
 }
