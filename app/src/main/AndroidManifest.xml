@@ -26,6 +26,16 @@
         </activity>
         <activity android:name=".SecondActivity">
         </activity>
+        <activity android:name=".GuiaUsoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MenuActivity" />
+        </activity>
+        <activity android:name=".PDFViewerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".GuiaUsoActivity" />
+        </activity>
     </application>
 
 </manifest>

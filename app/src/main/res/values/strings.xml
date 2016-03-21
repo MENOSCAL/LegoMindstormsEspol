@@ -16,4 +16,7 @@
     <string name="action_linkedin">LinkedIn</string>
     <string name="action_whatsapp">WhatsApp</string>
 
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+
 </resources>
