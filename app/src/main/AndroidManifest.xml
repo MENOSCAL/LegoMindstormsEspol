@@ -43,6 +43,9 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".LoginPluginActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="95d8876c7fbcf7c4bbb63b5d0cb59b843631899d" />
     </application>
 
 </manifest>
