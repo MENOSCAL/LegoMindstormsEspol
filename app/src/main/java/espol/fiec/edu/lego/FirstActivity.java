@@ -271,7 +271,6 @@ public class FirstActivity extends AppCompatActivity {
                             mToolbar.setTitle(listCategorias.get(4).getName());
                         } else if (position == 5) { //Bloques Avanzados
                             frag = new RobotFragment();
-                            frag.setGroup(5);
                             mToolbar.setTitle(listCategorias.get(5).getName());
                         }
 
