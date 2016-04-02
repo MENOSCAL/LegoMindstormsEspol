@@ -86,8 +86,9 @@ public class MenuActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_talleres) {
+            startActivity(new Intent(this,FirstActivity.class));
+        }
+        else if (id == R.id.nav_talleres) {
             startActivity(new Intent(this,ListaTalleresActivity.class));
 
         } else if (id == R.id.nav_manuales) {
@@ -97,6 +98,7 @@ public class MenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
             it = new Intent(Intent.ACTION_VIEW);
             it.setData(Uri.parse("https://www.facebook.com/LEGO"));
+            startActivity(it);
 
         } else if (id == R.id.nav_send) {
 
