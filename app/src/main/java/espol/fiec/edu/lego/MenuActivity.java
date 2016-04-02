@@ -83,9 +83,9 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
         Intent it = null;
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_perfil) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_programacion) {
             startActivity(new Intent(this,FirstActivity.class));
         }
         else if (id == R.id.nav_talleres) {
