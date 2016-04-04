@@ -196,7 +196,7 @@ public class FirstActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withCompactStyle(false)
                 .withSavedInstance(savedInstanceState)
-                .withThreeSmallProfileImages(true)
+                //.withThreeSmallProfileImages(true)
                 //.withHeaderBackground(R.drawable.portada)
                 .withTextColorRes(R.color.black)
                 /*.addProfiles(
