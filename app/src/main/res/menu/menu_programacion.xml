@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all"
+            android:icon="@drawable/robot_1"
+            android:title="ALL Bloques" />
+        <item
+            android:id="@+id/nav_accion"
+            android:icon="@drawable/robot_1"
+            android:title="Bloques de Acción" />
+        <item
+            android:id="@+id/nav_flujo"
+            android:icon="@drawable/robot_2"
+            android:title="Bloques de Flujo" />
+        <item
+            android:id="@+id/nav_operaciones"
+            android:icon="@drawable/robot_3"
+            android:title="Bloque de Operaciones" />
+        <item
+            android:id="@+id/nav_sensores"
+            android:icon="@drawable/robot_4"
+            android:title="Bloque de Sensores" />
+        <item
+            android:id="@+id/nav_avanzados"
+            android:icon="@drawable/robot_4"
+            android:title="Bloque Avanzados" />
+    </group>
+</menu>

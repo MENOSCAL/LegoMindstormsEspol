@@ -1,28 +1,18 @@
 package espol.fiec.edu.lego;
 
-import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PieChartData;
-import lecho.lib.hellocharts.model.PointValue;
+
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.util.ChartUtils;
-import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
 public class PerfilActivity extends AppCompatActivity {
@@ -92,14 +82,20 @@ public class PerfilActivity extends AppCompatActivity {
 
         data = new PieChartData(values);
         data.setHasLabels(true);
-        //data.setHasLabelsOnlyForSelected(false);
         data.setHasLabelsOutside(true);
-        //data.setHasCenterCircle(false);
 
         chart.setPieChartData(data);
         chart.setCircleFillRatio(0.5f);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if(id == android.R.id.home){
+            finish();
+        }
+        return true;
+    }
+
 }
-
-
