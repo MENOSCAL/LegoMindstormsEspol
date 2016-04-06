@@ -7,7 +7,7 @@
     tools:context=".PerfilActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_main"
+        android:id="@+id/tb_perfil"
         android:elevation="4dp"
         android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
@@ -16,83 +16,179 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <!-- android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
+        android:layout_below="@+id/tb_perfil"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:cardElevation="3dp"
-        app:cardUseCompatPadding="false"
-        app:cardPreventCornerOverlap="true"
-        app:cardCornerRadius="10dp">
-    </android.support.v7.widget.CardView -->
+        android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_below="@+id/tb_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp">
-
-        <RelativeLayout
-            android:id="@+id/rl_fragment_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="165dp"
-            android:layout_above="@+id/inc_tb_bottom"
-            android:background="@drawable/rounded_layout">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/rounded_layout">
 
-            <ImageView
-                android:paddingLeft="6dp"
-                android:id="@+id/iv_robot"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginLeft="6dp"
-                android:src="@null"
-                android:background="@drawable/person_1"
-                />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Taller 1"
+                        android:textSize="18sp"/>
 
-            <!-- ImageView
-                android:paddingLeft="6dp"
-                android:id="@+id/iv_robot"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginTop="6dp"
-                android:src="@null"
-                android:background="@drawable/robodoz3r"
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Puntaje: 0"/>
 
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="57dp" / -->
+                    <RelativeLayout
+                        android:layout_marginTop="25dp"
+                        android:id="@+id/mainLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+                    </RelativeLayout>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/rounded_layout">
 
-            <TextView
-                android:textColor="@color/colorPrimarytext"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="35dp"
-                android:layout_toRightOf="@+id/iv_robot"
-                android:id="@+id/tv_model"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="16dp"
-                android:textSize="18sp"
-                android:text="Usuario 1"
-                />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Taller 2"
+                        android:textSize="18sp"/>
 
-            <TextView
-                android:textColor="@color/colorSecondText"
-                android:layout_below="@+id/tv_model"
-                android:layout_alignLeft="@+id/tv_model"
-                android:id="@+id/tv_brand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="16dp"
-                android:textSize="14sp"
-                android:text="Me llamo......"
-                />
-        </RelativeLayout>
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Puntaje: 0"/>
 
-    </FrameLayout>
+                    <RelativeLayout
+                        android:layout_marginTop="25dp"
+                        android:id="@+id/mainLayout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+                    </RelativeLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/rounded_layout">
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Taller 3"
+                        android:textSize="18sp"/>
+
+
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Puntaje: 0"/>
+
+                    <RelativeLayout
+                        android:layout_marginTop="25dp"
+                        android:id="@+id/mainLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+                    </RelativeLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/rounded_layout">
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Taller 4"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Puntaje: 0"/>
+
+                    <RelativeLayout
+                        android:layout_marginTop="25dp"
+                        android:id="@+id/mainLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+                    </RelativeLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/rounded_layout">
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Taller 5"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/colorPrimarytext"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Puntaje: 0"/>
+
+                    <RelativeLayout
+                        android:layout_marginTop="25dp"
+                        android:id="@+id/mainLayout4"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+                    </RelativeLayout>
+                </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

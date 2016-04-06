@@ -12,6 +12,10 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 
@@ -56,6 +60,10 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:1.13.0@aar') {
         transitive = true;
     }
+
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
+
 }
 
 //adding aaptOptions
