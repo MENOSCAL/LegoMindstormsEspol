@@ -42,7 +42,6 @@ public class RobotActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
         mToolbar.setTitle(robot.getModel());
         setSupportActionBar(mToolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -52,32 +51,6 @@ public class RobotActivity extends AppCompatActivity {
         TextView tvModel = (TextView) findViewById(R.id.tv_model);
         TextView tvBrand = (TextView) findViewById(R.id.tv_brand);
         TextView tvDescription = (TextView) findViewById(R.id.tv_description);
-        //Button btPhone = (Button) findViewById(R.id.bt_phone);
-
-        /*btPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMaterialDialog = new MaterialDialog(new ContextThemeWrapper(RobotActivity.this,  R.style.MyAlertDialog))
-                        .setTitle("Telefono de la Empresa")
-                        .setMessage(robot.getTel())
-                        .setPositiveButton("Ligar", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent it = new Intent(Intent.ACTION_CALL);
-                                it.setData(Uri.parse("tel:"+ robot.getTel().trim()));
-                                startActivity(it);
-                            }
-                        })
-                        .setNegativeButton("Voltar", new View.OnClickListener(){
-
-                                    @Override
-                                    public void onClick(View v) {
-                                        mMaterialDialog.dismiss();
-                                    }
-                                });
-                mMaterialDialog.show();
-            }
-        });*/
 
         ivRobot.setImageResource(robot.getPhoto());
         tvModel.setText(robot.getModel());

@@ -31,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".FirstActivity" />
-        <activity android:name=".SecondActivity" />
         <activity android:name=".GuiaUsoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
