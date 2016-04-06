@@ -9,17 +9,53 @@ require_once('functions.php');
  * @reference https://en.wikipedia.org/wiki/PHPDoc
  */
 
-
 $soapServer = new soap_server();
-
 $serviceName = 'LegoMindstormsEspol';
-
-$nameSpace = 'urn:LegoMindstorms';
-
+$nameSpace = 'urn:LegoMindstormsEspol';
 $soapServer->configureWSDL($serviceName,$nameSpace);
-
 $soapServer->wsdl->schemaTargetNamespace = $nameSpace;
 
+$soapServer->wsdl->addComplexType(
+    //Name
+    'structLogin',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'idUser'    => array('name' => 'idUser',    'type' => 'xsd:string'),
+        'username'  => array('name' => 'username',  'type' => 'xsd:string'),
+        'email'     => array('name' => 'email',     'type' => 'xsd:string'),
+        'password'  => array('name' => 'password',  'type' => 'xsd:string')));
+
+$soapServer->wsdl->addComplexType(
+    'arrayLogin',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType','wsdl:arrayType' => 'tns:structLogin[]')),
+    'tns:structLogin'
+    );
+
+$soapServer->register(
+    //Name
+    'Login', 
+    //Input:Parameter
+    array('email' => 'xsd:string','password' => 'xsd:string'),
+    //Output:Return
+    array('return' => 'tns:arrayLogin'),
+    //NameSpace
+    'urn:LegoMindstormsEspol',
+    //SoapAction
+    'urn:LegoMindstormsEspol#Login',
+    //Style
+    'rpc',
+    //Use
+    'encoded',
+    //Documentation
+    'Login de usuario');
 
 
 $HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';       
