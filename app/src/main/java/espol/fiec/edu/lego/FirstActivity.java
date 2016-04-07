@@ -74,11 +74,37 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
     public List<Robot> getSetRobotList(){
         int category=0;
-        String[] models = new String[]{"Accion de Bloques", "Control de Flujo","Operaciones con Datos","Sensores","Avanzados"};
-        String[] brands = new String[]{"Accion", "Flujo","Operación","Sensor","Avanzado"};
-        int[] categories = new int[]{1,2,3,4,5};
-        int[] photos = new int[]{R.drawable.accion, R.drawable.flujo,R.drawable.operacion,R.drawable.sensor,R.drawable.avanzado};
-        String[] description = new String[]{"Description 1","Description 2","Description 3","Description 4","Description 5"};
+        String[] models = new String[]{"Motor Mediano", "Motor Grande","Mover Dirección","Mover Tanque","Avanzados"};
+        String[] brands = new String[]{"Acción", "Acción","Acción","Acción","Avanzado"};
+        int[] categories = new int[]{1,1,1,1,5};
+        int[] photos = new int[]{R.drawable.motor_mediano, R.drawable.motor_grande,R.drawable.mover_direccion,R.drawable.mover_tanque,R.drawable.avanzado};
+        String[] description = new String[]{"El Motor mediano incluye un Sensor de rotación incorporado con resolución de 1 grado), " +
+                "pero es más pequeño y más liviano que el Motor grande. Esto significa que puede responder más rápidamente que el Motor grande.\n" +
+                "El Motor mediano puede programarse para encenderse o apagarse, controlar su nivel de energía o para funcionar durante una cantidad " +
+                "de tiempo o de rotaciones especificada.\n" +
+                "El Motor mediano funciona a 240–250 rpm, con un torque de rotación de 8 Ncm y un torque de rotor bloqueado de 12 Ncm (más rápido, pero menos potente).",
+
+                "El Motor grande es un motor  potente. Tiene un Sensor de rotación incorporado con resolución de 1 grado para un control preciso. " +
+                        "Está diseñado principalmente para controlar la conducción de sus robots.\n" +
+                        "Este motor funciona a 160-170 rpm, con una fuerza de torque que varía entre 20 y 40 Ncm lo que lo hace más lento pero más fuerte.",
+
+                "El Bloque mover la dirección puede cambiar la dirección del recorrido de su robot y sus parámetros son los siguientes:\n" +
+                        "Dirección: Define el valor como +100 para que gire en el sentido de las agujas del reloj. Si defines -100 girará en sentido contrario " +
+                        "y si el valor es 0 se moverá hacia delante en línea recta.\n" +
+                        "Potencia: Para establecer un giro suave define como potencia entre 10 y 20 y el valor por defecto es 50%.\n" +
+                        "Rotaciones: Indica el número de vueltas que ejecutará el motor.\n" +
+                        "Detener al final. Si está marcada esta entrada el motor se detendrá después de ejecutar el movimiento especificado.",
+
+                "El Bloque mover tanque permite darle movimiento al robot, por medio de una tracción tipo tanque y sus parámetros son los siguientes:\n" +
+                        "Encendido por rotaciones: Indica si los motores se detienen, avanzan de manera indefinida, avanzan una cantidad de segundos, " +
+                        "una cantidad de grados de giro de rueda o una cantidad definida de giros de rueda.\n" +
+                        "Potencia: Para establecer la potencia que se puede dar a los motores. El valor 0 corresponde a un motor detenido y el valor 1 es el mínimo de potencia " +
+                        "que se puede entregar a un motor y 100 el máximo. En el caso de querer que el motor vaya en dirección opuesta (reversa), se le debe agregar un signo “-” (negativo) " +
+                        "al número previo a la potencia, por lo tanto el margen sería entre -1 y -100.\n" +
+                        "Rotaciones: Indica el número de vueltas que ejecutará el motor.\n" +
+                        "Detener al final. Si está marcada esta entrada el motor se detendrá después de ejecutar el movimiento especificado.",
+
+                "Description 5"};
         List<Robot> listAux = new ArrayList<>();
 
         for(int i = 0; i < models.length; i++){

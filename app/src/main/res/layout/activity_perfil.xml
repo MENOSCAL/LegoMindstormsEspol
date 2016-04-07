@@ -38,6 +38,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Taller 1"
+                        android:textStyle="bold"
                         android:textSize="18sp"/>
 
                     <TextView
@@ -70,6 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Taller 2"
+                        android:textStyle="bold"
                         android:textSize="18sp"/>
 
                     <TextView
@@ -103,6 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Taller 3"
+                        android:textStyle="bold"
                         android:textSize="18sp"/>
 
 
@@ -137,6 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Taller 4"
+                        android:textStyle="bold"
                         android:textSize="18sp"/>
 
                     <TextView
@@ -170,6 +174,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Taller 5"
+                        android:textStyle="bold"
                         android:textSize="18sp"/>
 
                     <TextView

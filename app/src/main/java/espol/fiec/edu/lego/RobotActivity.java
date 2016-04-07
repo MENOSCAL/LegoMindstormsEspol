@@ -42,12 +42,12 @@ public class RobotActivity extends AppCompatActivity {
 
         ImageView ivRobot = (ImageView) findViewById(R.id.iv_robot);
         TextView tvModel = (TextView) findViewById(R.id.tv_model);
-        TextView tvBrand = (TextView) findViewById(R.id.tv_brand);
+        //TextView tvBrand = (TextView) findViewById(R.id.tv_brand);
         TextView tvDescription = (TextView) findViewById(R.id.tv_description);
 
         ivRobot.setImageResource(robot.getPhoto());
         tvModel.setText(robot.getModel());
-        tvBrand.setText(robot.getBrand());
+        //tvBrand.setText(robot.getBrand());
         tvDescription.setText(robot.getDescription());
 /*
         navigationDrawerLeft = new DrawerBuilder()
