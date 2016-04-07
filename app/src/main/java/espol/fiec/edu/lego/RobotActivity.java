@@ -9,18 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-
 import espol.fiec.edu.lego.domain.Robot;
-import me.drakeet.materialdialog.MaterialDialog;
 
 public class RobotActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private Robot robot;
-    private Drawer navigationDrawerLeft;
-    private MaterialDialog mMaterialDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +32,7 @@ public class RobotActivity extends AppCompatActivity {
             }
         }
 
-        mToolbar = (Toolbar) findViewById(R.id.tb_main);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(robot.getModel());
         setSupportActionBar(mToolbar);
 
@@ -56,10 +49,10 @@ public class RobotActivity extends AppCompatActivity {
         tvModel.setText(robot.getModel());
         tvBrand.setText(robot.getBrand());
         tvDescription.setText(robot.getDescription());
-
+/*
         navigationDrawerLeft = new DrawerBuilder()
                 .withActivity(this)
-                .build();
+                .build();*/
     }
 
     @Override

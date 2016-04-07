@@ -22,8 +22,7 @@
         android:id="@+id/iv_robot"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginRight="6dp"
-        android:src="@null"/>
+        android:layout_marginRight="6dp"/>
 
     <TextView
         android:textColor="@color/colorPrimarytext"
