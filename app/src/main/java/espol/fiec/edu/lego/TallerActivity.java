@@ -1,5 +1,6 @@
 package espol.fiec.edu.lego;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     private ViewFlipper viewFlipperInstrucciones;
     private Button btnAnterior, btnSiguiente;
 
+    private TextView txtIniciarTaller;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,11 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        btnAnterior= (Button) findViewById(R.id.btnAnterior);
+        txtIniciarTaller = (TextView) findViewById(R.id.txtIniciarTest);
+
+        btnAnterior = (Button) findViewById(R.id.btnAnterior);
+        btnAnterior.setClickable(false);
+
         btnSiguiente = (Button) findViewById(R.id.btnSiguiente);
 
         //int gallery_grid_Images[]={R.drawable.robodoz3r_1};
@@ -58,6 +65,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         btnAnterior.setOnClickListener(this);
         btnSiguiente.setOnClickListener(this);
 
+        txtIniciarTaller.setOnClickListener(this);
     }
 
     private void setFlipperImage(int res) {
@@ -66,7 +74,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         //System.out.println("res: "+ res);
         //image.setBackgroundResource(res);
         //image.setImageBitmap(getBitmapFromURL("http://icons.iconarchive.com/icons/crountch/one-piece-jolly-roger/72/Luffys-flag-icon.png"));
-        new ImageLoadTask("http://www.corporacionsmartest.com/lego_images/0"+res+".jpg", image).execute();
+        new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/Taller01/0"+res+".jpg", image).execute();
         viewFlipperInstrucciones.addView(image);
     }
 
@@ -94,14 +102,35 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.btnSiguiente:
+            case R.id.btnSiguiente:{
                 viewFlipperInstrucciones.showNext();
-                System.out.println("page: " + viewFlipperInstrucciones.getDisplayedChild());
+                //System.out.println("page: " + viewFlipperInstrucciones.getDisplayedChild());
+                if(viewFlipperInstrucciones.getDisplayedChild() != 0){
+                    btnAnterior.setClickable(true);
+                }
+
+                //Cuando se llega a la ultima imagen
+                if(viewFlipperInstrucciones.getDisplayedChild() == 2){
+                    txtIniciarTaller.setVisibility(View.VISIBLE);
+                }
+
                 break;
-            case R.id.btnAnterior:
+            }
+            case R.id.btnAnterior: {
                 viewFlipperInstrucciones.showPrevious();
-                System.out.println("page: " + viewFlipperInstrucciones.getDisplayedChild());
+                //System.out.println("page: " + viewFlipperInstrucciones.getDisplayedChild());
+                if (viewFlipperInstrucciones.getDisplayedChild() == 0) {
+                    btnAnterior.setClickable(false);
+                } else {
+                    btnSiguiente.setClickable(true);
+                }
                 break;
+            }
+            case R.id.txtIniciarTest:{
+                //ABRIR Test
+                startActivity(new Intent(this, TestActivity.class));
+                break;
+            }
         }
     }
 }
