@@ -37,7 +37,7 @@
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Taller 1"
+                        android:text="Talleres"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
@@ -47,147 +47,11 @@
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Puntaje: 0"/>
+                        android:text="Puntaje: 0/100"/>
 
                     <RelativeLayout
                         android:layout_marginTop="25dp"
                         android:id="@+id/mainLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-                    </RelativeLayout>
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/rounded_layout">
-
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Taller 2"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:layout_marginTop="25dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Puntaje: 0"/>
-
-                    <RelativeLayout
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/mainLayout1"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-                    </RelativeLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/rounded_layout">
-
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Taller 3"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-
-
-                    <TextView
-                        android:layout_marginTop="25dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Puntaje: 0"/>
-
-                    <RelativeLayout
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/mainLayout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-                    </RelativeLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/rounded_layout">
-
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Taller 4"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:layout_marginTop="25dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Puntaje: 0"/>
-
-                    <RelativeLayout
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/mainLayout3"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-                    </RelativeLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/rounded_layout">
-
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Taller 5"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:layout_marginTop="25dp"
-                        android:textColor="@color/colorPrimarytext"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Puntaje: 0"/>
-
-                    <RelativeLayout
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/mainLayout4"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:paddingBottom="@dimen/activity_vertical_margin"

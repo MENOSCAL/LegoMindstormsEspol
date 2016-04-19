@@ -17,11 +17,11 @@
         <item
             android:id="@+id/nav_operaciones"
             android:icon="@drawable/robot_3"
-            android:title="Bloque de Operaciones" />
+            android:title="Bloque del Sensor" />
         <item
             android:id="@+id/nav_sensores"
             android:icon="@drawable/robot_4"
-            android:title="Bloque de Sensores" />
+            android:title="Bloque de Datos" />
         <item
             android:id="@+id/nav_avanzados"
             android:icon="@drawable/robot_4"
