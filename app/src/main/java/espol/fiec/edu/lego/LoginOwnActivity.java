@@ -28,8 +28,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.ksoap2.serialization.SoapObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -135,7 +139,6 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -278,7 +281,6 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
         int IS_PRIMARY = 1;
     }
 
-
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -344,5 +346,21 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
             showProgress(false);
         }
     }
+
+
+    private void wsLogin(){
+        String NAMESPACE = "http://www.corporacionsmartest.com/";
+        String URL="http://www.corporacionsmartest.com/lego_mindstorm/web_services_lego/wsLegoMindstrom.php";
+        String METHOD_NAME = "Login";
+        String SOAP_ACTION = "LegoMindstormsEspol#Login";
+
+        SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+        request.addProperty("email",this.mEmailView.getText().toString());
+        request.addProperty("password", this.mPasswordView.getText().toString());
+
+
+
+    }
+
 }
 

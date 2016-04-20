@@ -24,11 +24,7 @@
             android:name=".MenuActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".FirstActivity" />
 
@@ -53,21 +49,23 @@
                 android:value=".ListaTalleresActivity" />
         </activity>
         <activity android:name=".RobotActivity" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <activity android:name=".LoginPluginActivity">
 
-        <activity android:name=".LoginPluginActivity" />
-
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="95d8876c7fbcf7c4bbb63b5d0cb59b843631899d" />
-
         <activity android:name=".PerfilActivity" />
         <activity
             android:name=".LoginOwnActivity"
             android:label="@string/title_activity_login_own" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
