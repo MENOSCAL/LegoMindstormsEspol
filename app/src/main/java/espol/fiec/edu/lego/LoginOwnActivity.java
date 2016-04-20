@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,9 +31,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -65,6 +70,9 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     private View mProgressView;
     private View mLoginFormView;
 
+    //Web services
+    private WebServicesConfiguration wsConf;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +80,8 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+
+        wsConf = (WebServicesConfiguration) getApplicationContext();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -95,6 +105,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
     }
 
     private void populateAutoComplete() {
@@ -309,18 +320,35 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                //Configuración del web service a consumir
+                HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_NAME_LOGIN());
+                //Agregando parametros del método
+                request.addProperty("email", mEmail);
+                request.addProperty("password", mPassword);
+                //
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+                envelope.dotNet = true;
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_NAME_LOGIN(), envelope);
+                SoapObject response = (SoapObject) envelope.bodyIn;
+                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+                String id = "";
+                String username = "";
+                String email = "";
+                String password = "";
+                for (int i = 0; i <responseVector.size(); ++i) {
+                    SoapObject datos =(SoapObject)responseVector.get(i);
+                    id          = datos.getProperty("idUser").toString();
+                    username    = datos.getProperty("username").toString();
+                    email       = datos.getProperty("email").toString();
+                    password    = datos.getProperty("password").toString();
                 }
+
+            } catch (Exception e) {
+                Log.i("Respuesta","excepción");
+                Log.i("Respuesta",e.toString());
+                return false;
             }
 
             // TODO: register the new account here.
@@ -348,19 +376,6 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     }
 
 
-    private void wsLogin(){
-        String NAMESPACE = "http://www.corporacionsmartest.com/";
-        String URL="http://www.corporacionsmartest.com/lego_mindstorm/web_services_lego/wsLegoMindstrom.php";
-        String METHOD_NAME = "Login";
-        String SOAP_ACTION = "LegoMindstormsEspol#Login";
-
-        SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-        request.addProperty("email",this.mEmailView.getText().toString());
-        request.addProperty("password", this.mPasswordView.getText().toString());
-
-
-
-    }
 
 }
 
