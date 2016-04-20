@@ -48,6 +48,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ListaTalleresActivity" />
         </activity>
+
+        <activity android:name=".TestActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TallerActivity" />
+        </activity>
+
         <activity android:name=".RobotActivity" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

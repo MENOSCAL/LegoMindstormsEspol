@@ -41,31 +41,6 @@ public class PerfilActivity extends AppCompatActivity {
         chart.setRotation(0);
         generateData();
         mainLayout.addView(chart);
-
-        mainLayout = (RelativeLayout) findViewById(R.id.mainLayout1);
-        chart = new PieChartView(this);
-        chart.setRotation(0);
-        generateData();
-        mainLayout.addView(chart);
-
-        mainLayout = (RelativeLayout) findViewById(R.id.mainLayout2);
-        chart = new PieChartView(this);
-        chart.setRotation(0);
-        generateData();
-        mainLayout.addView(chart);
-
-        mainLayout = (RelativeLayout) findViewById(R.id.mainLayout3);
-        chart = new PieChartView(this);
-        chart.setRotation(0);
-        generateData();
-        mainLayout.addView(chart);
-
-        mainLayout = (RelativeLayout) findViewById(R.id.mainLayout4);
-        chart = new PieChartView(this);
-        chart.setRotation(0);
-        generateData();
-        mainLayout.addView(chart);
-
     }
 
     private void generateData() {
