@@ -41,7 +41,7 @@ $soapServer->wsdl->addComplexType(
 
 $soapServer->register(
     //Name
-    'Login', 
+    'login',
     //Input:Parameter
     array('email' => 'xsd:string','password' => 'xsd:string'),
     //Output:Return
@@ -49,13 +49,33 @@ $soapServer->register(
     //NameSpace
     'urn:LegoMindstormsEspol',
     //SoapAction
-    'urn:LegoMindstormsEspol#Login',
+    'urn:LegoMindstormsEspol#login',
     //Style
     'rpc',
     //Use
     'encoded',
     //Documentation
     'Login de usuario');
+
+///////////////////////////////////////////
+
+$soapServer->register(
+    //Name
+    'insert_user',
+    //Input:Parameter
+    array('name' => 'xsd:string', 'username' => 'xsd:string', 'email' => 'xsd:string', 'password' => 'xsd:string'),
+    //Output:Return
+    array('return' => 'xsd:string'),
+    //NameSpace
+    'urn:LegoMindstormsEspol',
+    //SoapAction
+    'urn:LegoMindstormsEspol#insert_user',
+    //Style
+    'rpc',
+    //Use
+    'encoded',
+    //Documentation
+    'Método para insertar un nuevo usuario a la base de datos.');
 
 
 $HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';       

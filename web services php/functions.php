@@ -8,10 +8,17 @@
 
 include_once "connection.php";
 
+/**
+ * Login del usuario.
+ *
+ * @param string $email
+ * @param string $password
+ * @return array
+ */
 function login($email, $password){
     $connection = db_connect();
     $login = array();    
-    $query = "SELECT * FROM user WHERE email = '$email';";
+    $query = "SELECT * FROM User WHERE email = '$email';";
     $result = mysqli_query($connection,$query);    
     if (!$result){
         $login[] = array(
@@ -22,16 +29,45 @@ function login($email, $password){
     }
     else{
         while ($row = mysqli_fetch_array($result)){
-            if ($row['password'] == $password){
+            if ($row['Password'] == $password){
                 $login[] = array(
                     'idUser'	=> $row['idUser'],
-                    'username'	=> $row['username'],
-                    'email'		=> $row['email'],
-                    'password'	=> $row['password']
+                    'username'	=> $row['Username'],
+                    'email'		=> $row['Email'],
+                    'password'	=> $row['Password']
                 );
             }
         }
     }
     mysqli_close($connection);
-    return ($login);
+    return $login;
 }
+
+/**
+ * Método para insertar un nuevo usuario
+ * a la base de datos.
+ *
+ * @param string $name
+ * @param string $username
+ * @param string $email
+ * @param string $password
+ * @return string
+ */
+function insert_user($name, $username, $email, $password){
+    $connection = db_connect();
+    $response = '';
+    $query = "INSERT INTO User(Name, Username, Email, Password) "
+            ."VALUES "
+            ."('$name', '$username', '$email', '$password');";
+    $result = mysqli_query($connection, $query);
+    if (!$result){
+        $response = 'ERROR : Insert fallido -> ' . mysqli_error($connection);
+    }
+    else{
+        $response = '1';
+    }
+    mysqli_close($connection);
+    return $response;
+}
+
+

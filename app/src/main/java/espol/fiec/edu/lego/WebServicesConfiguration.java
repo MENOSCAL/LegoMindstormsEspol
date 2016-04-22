@@ -12,8 +12,9 @@ public class WebServicesConfiguration extends Application {
     private String SOAP_ACTION = "urn:LegoMindstormsEspol#";
 
     //Nombre de métodos
-    private String METHOD_NAME_LOGIN = "Login";
+    private String METHOD_NAME_LOGIN = "login";
 
+    //Getters
     public String getNAMESPACE() {
         return NAMESPACE;
     }

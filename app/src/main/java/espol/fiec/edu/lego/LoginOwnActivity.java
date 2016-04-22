@@ -3,6 +3,7 @@ package espol.fiec.edu.lego;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -343,6 +344,10 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     username    = datos.getProperty("username").toString();
                     email       = datos.getProperty("email").toString();
                     password    = datos.getProperty("password").toString();
+                }
+                if(responseVector != null){
+                    Intent i = new Intent(getBaseContext(), MenuActivity.class);
+                    startActivity(i);
                 }
 
             } catch (Exception e) {
