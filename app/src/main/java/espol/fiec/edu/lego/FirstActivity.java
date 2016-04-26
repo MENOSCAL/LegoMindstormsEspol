@@ -1,5 +1,9 @@
 package espol.fiec.edu.lego;
 
+import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.twitter.sdk.android.Twitter;
@@ -15,28 +21,50 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import espol.fiec.edu.lego.domain.Robot;
 import espol.fiec.edu.lego.fragments.RobotFragment;
 
+
+
+import android.app.LoaderManager.LoaderCallbacks;
+import android.view.View;
+
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+
 public class FirstActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "TSbcJHnOJWFuah2HTFxmUwn9b";
-    private static final String TWITTER_SECRET = "pJZeESURODEhqfNQEUJ9hAi88025Ih5QHgMyoMqqO01iQQLcAO";
+    //private static final String TWITTER_KEY = "TSbcJHnOJWFuah2HTFxmUwn9b";
+    //private static final String TWITTER_SECRET = "pJZeESURODEhqfNQEUJ9hAi88025Ih5QHgMyoMqqO01iQQLcAO";
 
 
     private Toolbar mToolbar;
     private int mItemDrawerSelected;
     private List<Robot> listRobots;
 
+    //Web services
+    private WebServicesConfiguration wsConf;
+
+    /**
+     * Keep track of the login task to ensure we can cancel it if requested.
+     */
+    private UserLoginTask mAuthTask = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        //TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        //Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_first);
+
+        wsConf = (WebServicesConfiguration) getApplicationContext();
+        attemptLogin();
 
 
         if(savedInstanceState != null){
@@ -268,5 +296,81 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
+    private void attemptLogin() {
+            mAuthTask = new UserLoginTask("alfonso.menos@gmail.com", "123");
+            mAuthTask.execute((Void) null);
+    }
+
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mEmail;
+        private final String mPassword;
+
+        UserLoginTask(String email, String password) {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                //Configuración del web service a consumir
+                HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_NAME_LOGIN());
+                //Agregando parametros del método
+                request.addProperty("email", mEmail);
+                request.addProperty("password", mPassword);
+
+
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+                envelope.dotNet = true;
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_NAME_LOGIN(), envelope);
+                SoapObject response = (SoapObject) envelope.bodyIn;
+                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+                String id = "";
+                String username = "";
+                String email = "";
+                String password = "";
+                for (int i = 0; i <responseVector.size(); ++i) {
+                    SoapObject datos =(SoapObject)responseVector.get(i);
+                    id          = datos.getProperty("idUser").toString();
+                    username    = datos.getProperty("username").toString();
+                    email       = datos.getProperty("email").toString();
+                    password    = datos.getProperty("password").toString();
+                }
+                Log.i("Respuesta ", username+"");
+
+
+                if(responseVector != null){
+                   // Intent i = new Intent(getBaseContext(), MenuActivity.class);
+                   // startActivity(i);
+                }
+
+            } catch (Exception e) {
+                Log.i("Respuesta", "excepción");
+                Log.i("Respuesta",e.toString());
+                return false;
+            }
+
+            // TODO: register the new account here.
+            return true;
+        }
+
     }
 }
