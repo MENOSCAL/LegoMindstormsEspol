@@ -28,17 +28,19 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     private Toolbar mToolbar;
     private ViewFlipper viewFlipperInstrucciones;
     private Button btnAnterior, btnSiguiente;
-
     private TextView txtIniciarTaller;
-
+    private String tallerName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taller);
 
+        Bundle bolsaR = getIntent().getExtras();
+        tallerName = bolsaR.getString("tallerKey");
+
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
-        mToolbar.setTitle("Taller");
+        mToolbar.setTitle(tallerName);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -49,17 +51,12 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
 
         btnSiguiente = (Button) findViewById(R.id.btnSiguiente);
 
-        //int gallery_grid_Images[]={R.drawable.robodoz3r_1};
-        int gallery_grid_Images[]={R.drawable.robodoz3r_1, R.drawable.robodoz3r_2, R.drawable.robodoz3r_3};
-
         viewFlipperInstrucciones = (ViewFlipper) findViewById(R.id.vfInstrucciones);
 
-        //for(int i=0;i<gallery_grid_Images.length;i++)
         for(int i=1;i<4;i++)
         {
-            //  This will create dynamic image view and add them to ViewFlipper
-            //setFlipperImage(gallery_grid_Images[i]);
-            setFlipperImage(i);
+            //This will create dynamic image view and add them to ViewFlipper
+            setFlipperImage(i, tallerName);
         }
 
         btnAnterior.setOnClickListener(this);
@@ -68,34 +65,13 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         txtIniciarTaller.setOnClickListener(this);
     }
 
-    private void setFlipperImage(int res) {
+    private void setFlipperImage(int res, String taller) {
         Log.i("Set Flipper Called", res + "");
         ImageView image = new ImageView(getApplicationContext());
-        //System.out.println("res: "+ res);
-        //image.setBackgroundResource(res);
-        //image.setImageBitmap(getBitmapFromURL("http://icons.iconarchive.com/icons/crountch/one-piece-jolly-roger/72/Luffys-flag-icon.png"));
-        new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/Taller01/0"+res+".jpg", image).execute();
+
+        new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/"+taller+"/"+res+".jpg", image).execute();
+
         viewFlipperInstrucciones.addView(image);
-    }
-
-    public Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src",src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-
-            System.out.print("Bitmap: " +  myBitmap.toString());
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
     }
 
     @Override
@@ -104,7 +80,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.btnSiguiente:{
                 viewFlipperInstrucciones.showNext();
-                //System.out.println("page: " + viewFlipperInstrucciones.getDisplayedChild());
+
                 if(viewFlipperInstrucciones.getDisplayedChild() != 0){
                     btnAnterior.setClickable(true);
                 }
@@ -118,7 +94,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
             }
             case R.id.btnAnterior: {
                 viewFlipperInstrucciones.showPrevious();
-                //System.out.println("page: " + viewFlipperInstrucciones.getDisplayedChild());
+
                 if (viewFlipperInstrucciones.getDisplayedChild() == 0) {
                     btnAnterior.setClickable(false);
                 } else {
@@ -127,7 +103,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
             case R.id.txtIniciarTest:{
-                //ABRIR Test
+                //Abrir Test
                 startActivity(new Intent(this, TestActivity.class));
                 break;
             }

@@ -74,7 +74,7 @@
         <activity android:name=".TestActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TallerActivity" />
+                android:value=".ListaTalleresActivity" />
         </activity>
 
         <activity android:name=".RobotActivity" />
