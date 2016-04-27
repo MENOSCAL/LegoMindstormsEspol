@@ -346,7 +346,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     password    = datos.getProperty("password").toString();
                 }
                 if(responseVector != null){
-                    Intent i = new Intent(getBaseContext(), MenuActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                     startActivity(i);
                 }
 

@@ -7,12 +7,12 @@ import android.app.Application;
  */
 public class WebServicesConfiguration extends Application {
     //Configuracion
-    private String NAMESPACE = "urn:LegoMindstormsEspol";
-    private String URL= "http://www.corporacionsmartest.com/lego_mindstorm/web_services_lego/wsLegoMindstrom.php";
-    private String SOAP_ACTION = "urn:LegoMindstormsEspol#";
+    private String NAMESPACE = "urn:HogarDeCristo";
+    private String URL= "http://www.corporacionsmartest.com/lego_mindstorm/web_services_lego/wsHogarDeCristo.php";
+    private String SOAP_ACTION = "urn:HogarDeCristo#";
 
     //Nombre de métodos
-    private String METHOD_NAME_LOGIN = "login";
+    private String METHOD_NAME_LOGIN = "login_user";
 
     //Getters
     public String getNAMESPACE() {
