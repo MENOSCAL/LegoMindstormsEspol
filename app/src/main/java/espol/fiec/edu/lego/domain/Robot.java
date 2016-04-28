@@ -7,36 +7,28 @@ import android.os.Parcelable;
  * Created by mm on 10/03/2016.
  */
 public class Robot implements Parcelable {
-    /*public String getTel() {
-        return tel;
-    }
 
-    public void setTel(String tel) {
-        this.tel = tel;
-    }*/
-
-    private String model;
+    private String title;
     private String brand;
     private String description;
     private int category;
-    //private String tel;
     private int photo;
 
+    private String url;
 
     public Robot(){}
-    public Robot(String m, String b, int p, String d){
-        model = m;
-        brand = b;
-        photo = p;
-        description = d;
+    public Robot(String title, String brand, String description){
+        this.title = title;
+        this.brand = brand;
+        this.description = description;
     }
 
-    public String getModel() {
-        return model;
+    public String getTitle() {
+        return title;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getBrand() {
@@ -71,14 +63,23 @@ public class Robot implements Parcelable {
         this.category = category;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     //PARCELABLE
     public Robot(Parcel parcel){
-        setModel(parcel.readString());
+        setTitle(parcel.readString());
         setBrand(parcel.readString());
         setDescription(parcel.readString());
         setCategory(parcel.readInt());
         setPhoto(parcel.readInt());
-        //setTel(parcel.readString());
+
+        setUrl(parcel.readString());
     }
 
     @Override
@@ -88,12 +89,13 @@ public class Robot implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getModel());
+        dest.writeString(getTitle());
         dest.writeString(getBrand());
         dest.writeString(getDescription());
         dest.writeInt(getCategory());
         dest.writeInt(getPhoto());
-        //dest.writeString(getTel());
+
+        dest.writeString(getUrl());
     }
 
     public static final Parcelable.Creator<Robot> CREATOR = new Parcelable.Creator<Robot>(){

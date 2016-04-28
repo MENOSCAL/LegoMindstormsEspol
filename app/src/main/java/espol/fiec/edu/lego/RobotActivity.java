@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import espol.fiec.edu.lego.asynctasks.ImageLoadRobot;
 import espol.fiec.edu.lego.domain.Robot;
 
 public class RobotActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class RobotActivity extends AppCompatActivity {
         }
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(robot.getModel());
+        mToolbar.setTitle(robot.getTitle());
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,8 +46,10 @@ public class RobotActivity extends AppCompatActivity {
         //TextView tvBrand = (TextView) findViewById(R.id.tv_brand);
         TextView tvDescription = (TextView) findViewById(R.id.tv_description);
 
-        ivRobot.setImageResource(robot.getPhoto());
-        tvModel.setText(robot.getModel());
+        new ImageLoadRobot("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+robot.getUrl()+".jpg" , ivRobot).execute();
+
+        //ivRobot.setImageResource(robot.getPhoto());
+        tvModel.setText(robot.getTitle());
         //tvBrand.setText(robot.getBrand());
         tvDescription.setText(robot.getDescription());
 /*

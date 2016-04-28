@@ -109,11 +109,19 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                 "Bloque Acceso al archivo","Bloque Mandar mensajes","Bloque Conexión Bluetooth","Bloque Mantener activo","Bloque Comentario","Bloque Valor del sensor sin procesar","Bloque Detener","Bloque Invertir el motor","Bloque Motor sin regular"};
         String[] brands = new String[]{"Acción", "Acción","Acción","Acción","Acción","Acción","Acción","Flujo","Flujo","Flujo","Flujo","Flujo","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados"};
         int[] categories = new int[]{1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5};
-        int[] photos = new int[]{R.drawable.motor_mediano, R.drawable.motor_grande,R.drawable.mover_direccion,R.drawable.mover_tanque,R.drawable.pantalla,R.drawable.sonido,R.drawable.luz_estado,
+        /*int[] photos = new int[]{R.drawable.motor_mediano, R.drawable.motor_grande,R.drawable.mover_direccion,R.drawable.mover_tanque,R.drawable.pantalla,R.drawable.sonido,R.drawable.luz_estado,
         R.drawable.iniciar,R.drawable.esperar,R.drawable.bucle,R.drawable.interruptor,R.drawable.interrupcion_bucle,
         R.drawable.sensor_ultrasonico,R.drawable.sensor_infrarrojo,R.drawable.sensor_girosensor,R.drawable.sensor_color,R.drawable.rotacion_motor,R.drawable.sensor_tactil,R.drawable.temporizador,R.drawable.botones,R.drawable.sensor_sonido,R.drawable.sensor_temperatura,R.drawable.energia,
         R.drawable.constante,R.drawable.variable,R.drawable.operaciones_secuenciales,R.drawable.operaciones_logicas,R.drawable.matematica,R.drawable.redondear,R.drawable.comparar,R.drawable.rango,R.drawable.texto,R.drawable.aleatorio,
         R.drawable.acceso_archivo,R.drawable.mandar_mensaje,R.drawable.conexion_bluetooth,R.drawable.mantener_activo,R.drawable.comentario,R.drawable.sensor_sin_procesar,R.drawable.detener,R.drawable.invertir_motor,R.drawable.motor_sin_regular};
+        */
+        String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
+                "iniciar","esperar","bucle","interruptor","interrupcion_bucle",
+                "sensor_ultrasonico","sensor_infrarrojo","sensor_girosensor","sensor_color","rotacion_motor","sensor_tactil","temporizador","botones","sensor_sonido","sensor_temperatura","energia",
+                "constante","variable","operaciones_secuenciales","operaciones_logicas","matematica","redondear","comparar","rango","texto","aleatorio",
+                "acceso_archivo","mandar_mensaje","conexion_bluetooth","mantener_activo","comentario","sensor_sin_procesar","detener","invertir_motor","motor_sin_regular"};
+
+
         String[] description = new String[]{"El bloque Motor mediano controla el motor mediano. Puede encender y apagar el motor, controlar el nivel de potencia, o bien, encender el motor por una cantidad específica de tiempo o rotaciones.",
 
                 "El bloque Motor grande controla un motor grande. Puede encender y apagar un motor, controlar el nivel de potencia o encender el motor por una cantidad específica de tiempo o rotaciones.",
@@ -212,8 +220,13 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
         List<Robot> listAux = new ArrayList<>();
 
         for(int i = 0; i < title.length; i++){
-            Robot c = new Robot( title[i % title.length], brands[ i % brands.length], photos[i % photos.length],description[i % description.length] );
-            c.setCategory(categories[i % title.length]);
+            Robot c = new Robot( title[i % title.length], brands[ i % brands.length], description[i % description.length] );
+
+            //c.setPhoto(photos[i % photos.length]);
+            c.setCategory(categories[i % categories.length]);
+
+            c.setUrl(url[i % url.length]);
+
 
             if(category != 0 && c.getCategory() != category){
                 continue;
@@ -304,7 +317,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-            mAuthTask = new UserLoginTask("alfonso.menos@gmail.com", "123");
+            mAuthTask = new UserLoginTask("alfonso.menos@gmail.com", "123456");
             mAuthTask.execute((Void) null);
     }
 

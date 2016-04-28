@@ -18,6 +18,8 @@ import com.daimajia.androidanimations.library.YoYo;
 import java.util.List;
 
 import espol.fiec.edu.lego.R;
+import espol.fiec.edu.lego.asynctasks.ImageLoad;
+import espol.fiec.edu.lego.asynctasks.ImageLoadTask;
 import espol.fiec.edu.lego.domain.Robot;
 import espol.fiec.edu.lego.extras.ImageHelper;
 import espol.fiec.edu.lego.interfaces.RecyclerViewOnClickListenerHack;
@@ -55,9 +57,9 @@ public class RobotAdapter extends RecyclerView.Adapter<RobotAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //Log.i("LOG","onBindViewHolder");
-        holder.tvModel.setText(mList.get(position).getModel());
+        holder.tvModel.setText(mList.get(position).getTitle());
         holder.tvBrand.setText(mList.get(position).getBrand());
-
+/*
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             //holder.ivCar.setImageResource(mList.get(position).getPhoto());
             Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), mList.get(position).getPhoto());
@@ -73,6 +75,10 @@ public class RobotAdapter extends RecyclerView.Adapter<RobotAdapter.MyViewHolder
             bitmap = ImageHelper.getRoundedCornerBitmap(mContext, bitmap, 10, width, height, false, false, true, true);
             holder.ivRobot.setImageBitmap(bitmap);
         }
+*/
+
+        new ImageLoad("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+mList.get(position).getUrl()+".jpg" , holder.ivRobot, mContext, width, height).execute();
+
         try {
             YoYo.with(Techniques.Tada)
                     .duration(700)
