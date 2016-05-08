@@ -23,6 +23,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     private Button btnAnterior, btnSiguiente;
     private TextView txtIniciarTaller;
     private String tallerName;
+    private int tallerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,8 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_taller);
 
         Bundle bolsaR = getIntent().getExtras();
-        tallerName = bolsaR.getString("tallerKey");
+        tallerName = bolsaR.getString("tallerNameKey");
+        tallerId = bolsaR.getInt("tallerIdKey");
 
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
         mToolbar.setTitle(tallerName);
@@ -97,7 +99,15 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
             }
             case R.id.txtIniciarTest:{
                 //Abrir Test
-                startActivity(new Intent(this, TestActivity.class));
+                Intent testActivity = new Intent(this, TestActivity.class);
+
+                Bundle bolsa=new Bundle();
+                bolsa.putString("tallerNameKey", tallerName);
+                bolsa.putInt("tallerIdKey", tallerId);
+
+                testActivity.putExtras(bolsa);
+
+                startActivity(testActivity);
                 break;
             }
         }

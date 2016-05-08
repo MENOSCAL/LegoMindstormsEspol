@@ -351,6 +351,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.i("Respuesta","excepción");
                 Log.i("Respuesta",e.toString());
                 return false;

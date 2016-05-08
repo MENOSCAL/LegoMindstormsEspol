@@ -2,10 +2,9 @@ package espol.fiec.edu.lego;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,8 +14,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+import espol.fiec.edu.lego.domain.Taller;
+
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    //Web services
+    private WebServicesConfiguration wsConf;
+
+    public static ArrayList<Taller> listTalleres;
+
+    private GetTalleresTask getTalleresTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +39,8 @@ public class MenuActivity extends AppCompatActivity
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        listTalleres =  new ArrayList<Taller>();
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +106,11 @@ public class MenuActivity extends AppCompatActivity
             startActivity(new Intent(this,FirstActivity.class));
         }
         else if (id == R.id.nav_talleres) {
-            startActivity(new Intent(this,ListaTalleresActivity.class));
+            wsConf = (WebServicesConfiguration) getApplicationContext();
+
+            getTalleresTask = new GetTalleresTask();
+            getTalleresTask.execute((Void) null);
+            //startActivity(new Intent(this,ListaTalleresActivity.class));
 
         } else if (id == R.id.nav_manuales) {
             //Open Guide activity
@@ -107,5 +128,60 @@ public class MenuActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class GetTalleresTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                //Configuración del web service a consumir
+                HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_TALLERES());
+
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+                envelope.dotNet = true;
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                SoapObject response = (SoapObject) envelope.bodyIn;
+                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+
+                for (int i = 0; i <responseVector.size(); ++i) {
+                    SoapObject datos =(SoapObject)responseVector.get(i);
+                    listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString()));
+                }
+                /*
+                if(responseVector != null){
+                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                    startActivity(i);
+                }
+                */
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("Respuesta", "excepción");
+                Log.i("Respuesta",e.toString());
+                return false;
+            }
+
+            // TODO: register the new account here.
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            startActivity(new Intent(getApplicationContext(),ListaTalleresActivity.class));
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
     }
 }

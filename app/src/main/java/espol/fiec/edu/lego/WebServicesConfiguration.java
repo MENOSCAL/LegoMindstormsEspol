@@ -8,11 +8,12 @@ import android.app.Application;
 public class WebServicesConfiguration extends Application {
     //Configuracion
     private String NAMESPACE = "urn:HogarDeCristo";
-    private String URL= "http://www.corporacionsmartest.com/lego_mindstorm/web_services_lego/wsHogarDeCristo.php";
+    private String URL= "http://www.corporacionsmartest.com/hogar_de_cristo/wsHogarDeCristo.php";
     private String SOAP_ACTION = "urn:HogarDeCristo#";
 
     //Nombre de métodos
     private String METHOD_NAME_LOGIN = "login_user";
+    private String METHOD_GET_TALLERES = "get_talleres";
 
     //Getters
     public String getNAMESPACE() {
@@ -29,5 +30,9 @@ public class WebServicesConfiguration extends Application {
 
     public String getMETHOD_NAME_LOGIN() {
         return METHOD_NAME_LOGIN;
+    }
+
+    public String getMETHOD_GET_TALLERES() {
+        return METHOD_GET_TALLERES;
     }
 }
