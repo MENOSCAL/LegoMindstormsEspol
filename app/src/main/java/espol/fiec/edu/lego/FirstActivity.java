@@ -1,8 +1,6 @@
 package espol.fiec.edu.lego;
 
-import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,13 +10,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -26,22 +20,12 @@ import java.util.Vector;
 import espol.fiec.edu.lego.domain.Robot;
 import espol.fiec.edu.lego.fragments.RobotFragment;
 
-
-
-import android.app.LoaderManager.LoaderCallbacks;
-import android.view.View;
-
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 
 public class FirstActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    //private static final String TWITTER_KEY = "TSbcJHnOJWFuah2HTFxmUwn9b";
-    //private static final String TWITTER_SECRET = "pJZeESURODEhqfNQEUJ9hAi88025Ih5QHgMyoMqqO01iQQLcAO";
-
 
     private Toolbar mToolbar;
     private int mItemDrawerSelected;
@@ -53,18 +37,15 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private UserBloqueTask mAuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        //Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_first);
 
-        wsConf = (WebServicesConfiguration) getApplicationContext();
-        attemptLogin();
+
 
 
         if(savedInstanceState != null){
@@ -72,7 +53,12 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
             listRobots = savedInstanceState.getParcelableArrayList("listRobots");
         }
         else{
-            listRobots = getSetRobotList();
+          //  listRobots = getSetRobotList();
+            listRobots = new ArrayList<Robot>();
+            wsConf = (WebServicesConfiguration) getApplicationContext();
+
+            mAuthTask = new UserBloqueTask();
+            mAuthTask.execute((Void) null);
         }
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -90,17 +76,10 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //FRAGMENT
-        RobotFragment frag = (RobotFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
-        if(frag == null){
-            frag = new RobotFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.rl_fragment_container,frag, "mainFrag");
-            ft.commit();
-        }
+
     }
 
-    public List<Robot> getSetRobotList(){
+   /*public List<Robot> getSetRobotList(){
         int category=0;
         String[] title = new String[]{"Bloque Motor mediano","Bloque Motor grande","Bloque Mover la dirección","Bloque Mover tanque","Bloque Pantalla","Bloque Sonido","Bloque Luz de estado del Bloque EV3",
                 "Bloque de inicio","Bloque Esperar","Bloque de bucle","Bloque Interruptor","Bloque Interrupción del bucle",
@@ -109,13 +88,14 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                 "Bloque Acceso al archivo","Bloque Mandar mensajes","Bloque Conexión Bluetooth","Bloque Mantener activo","Bloque Comentario","Bloque Valor del sensor sin procesar","Bloque Detener","Bloque Invertir el motor","Bloque Motor sin regular"};
         String[] brands = new String[]{"Acción", "Acción","Acción","Acción","Acción","Acción","Acción","Flujo","Flujo","Flujo","Flujo","Flujo","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Sensor","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Datos","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados","Avanzados"};
         int[] categories = new int[]{1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5};
+        */
         /*int[] photos = new int[]{R.drawable.motor_mediano, R.drawable.motor_grande,R.drawable.mover_direccion,R.drawable.mover_tanque,R.drawable.pantalla,R.drawable.sonido,R.drawable.luz_estado,
         R.drawable.iniciar,R.drawable.esperar,R.drawable.bucle,R.drawable.interruptor,R.drawable.interrupcion_bucle,
         R.drawable.sensor_ultrasonico,R.drawable.sensor_infrarrojo,R.drawable.sensor_girosensor,R.drawable.sensor_color,R.drawable.rotacion_motor,R.drawable.sensor_tactil,R.drawable.temporizador,R.drawable.botones,R.drawable.sensor_sonido,R.drawable.sensor_temperatura,R.drawable.energia,
         R.drawable.constante,R.drawable.variable,R.drawable.operaciones_secuenciales,R.drawable.operaciones_logicas,R.drawable.matematica,R.drawable.redondear,R.drawable.comparar,R.drawable.rango,R.drawable.texto,R.drawable.aleatorio,
         R.drawable.acceso_archivo,R.drawable.mandar_mensaje,R.drawable.conexion_bluetooth,R.drawable.mantener_activo,R.drawable.comentario,R.drawable.sensor_sin_procesar,R.drawable.detener,R.drawable.invertir_motor,R.drawable.motor_sin_regular};
         */
-        String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
+        /*String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
                 "iniciar","esperar","bucle","interruptor","interrupcion_bucle",
                 "sensor_ultrasonico","sensor_infrarrojo","sensor_girosensor","sensor_color","rotacion_motor","sensor_tactil","temporizador","botones","sensor_sonido","sensor_temperatura","energia",
                 "constante","variable","operaciones_secuenciales","operaciones_logicas","matematica","redondear","comparar","rango","texto","aleatorio",
@@ -217,6 +197,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
                 "El bloque Motor sin regular controla tanto los motores medianos como los grandes. Puede encender un motor y controlar su nivel de potencia."
         };
+
         List<Robot> listAux = new ArrayList<>();
 
         for(int i = 0; i < title.length; i++){
@@ -235,6 +216,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
         }
         return(listAux);
     }
+    */
     public List<Robot> getRobotsByCategory(int category){
         List<Robot> listAux = new ArrayList<>();
         for(int i = 0; i < listRobots.size(); i++){
@@ -301,7 +283,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
             mToolbar.setTitle(item.getTitle());
         }
 
-        listRobots = getSetRobotList();
+        //listRobots = getSetRobotList();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.rl_fragment_container, frag, "mainFrag");
         ft.commit();
@@ -311,68 +293,63 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-            mAuthTask = new UserLoginTask("alfonso.menos@gmail.com", "123456");
-            mAuthTask.execute((Void) null);
-    }
-
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
+    public class UserBloqueTask extends AsyncTask<Void, Void, Boolean> {
+        
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            ArrayList<String> name_categories = new ArrayList<String>();
+            ArrayList<String> brands1 = new ArrayList<String>();
+
+            ArrayList<String> idCategory = new ArrayList<String>();
 
             try {
                 //Configuración del web service a consumir
                 HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
-                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_NAME_LOGIN());
-                //Agregando parametros del método
-                request.addProperty("email", mEmail);
-                request.addProperty("password", mPassword);
-
-
-
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_BLOQUES());
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
-                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_NAME_LOGIN(), envelope);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_BLOQUES(), envelope);
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 Vector<?> responseVector = (Vector<?>) response.getProperty(0);
-                String id = "";
-                String username = "";
-                String email = "";
-                String password = "";
+                String categoryB = "";
+                String titleB = "";
+                String descriptionB = "";
+                int[] categories = new int[]{1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5};
+                int category=0;
+                String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
+                        "iniciar","esperar","bucle","interruptor","interrupcion_bucle",
+                        "sensor_ultrasonico","sensor_infrarrojo","sensor_girosensor","sensor_color","rotacion_motor","sensor_tactil","temporizador","botones","sensor_sonido","sensor_temperatura","energia",
+                        "constante","variable","operaciones_secuenciales","operaciones_logicas","matematica","redondear","comparar","rango","texto","aleatorio",
+                        "acceso_archivo","mandar_mensaje","conexion_bluetooth","mantener_activo","comentario","sensor_sin_procesar","detener","invertir_motor","motor_sin_regular"};
+
+
+
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
-                    id          = datos.getProperty("idUser").toString();
-                    username    = datos.getProperty("username").toString();
-                    email       = datos.getProperty("email").toString();
-                    password    = datos.getProperty("password").toString();
-                }
-                Log.i("Respuesta ", username+"");
+                    categoryB          = datos.getProperty("Category_idCategory").toString();
+                    titleB             = datos.getProperty("Title").toString();
+                    descriptionB       = datos.getProperty("Description").toString();
+
+                    Robot c = new Robot( titleB, categoryB, descriptionB );
+
+                    //c.setPhoto(photos[i % photos.length]);
+                    c.setCategory(categories[i % categories.length]);
+
+                    c.setUrl(url[i % url.length]);
 
 
-                if(responseVector != null){
-                   // Intent i = new Intent(getBaseContext(), MenuActivity.class);
-                   // startActivity(i);
+                    if(category != 0 && c.getCategory() != category){
+                        continue;
+                    }
+                    listRobots.add(c);
+
                 }
 
             } catch (Exception e) {
@@ -385,5 +362,16 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
             return true;
         }
 
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            //FRAGMENT
+            RobotFragment frag = (RobotFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+            if(frag == null){
+                frag = new RobotFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.rl_fragment_container,frag, "mainFrag");
+                ft.commit();
+            }
+        }
     }
 }

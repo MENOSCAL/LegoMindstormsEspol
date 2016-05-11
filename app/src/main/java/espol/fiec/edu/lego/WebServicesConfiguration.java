@@ -14,6 +14,8 @@ public class WebServicesConfiguration extends Application {
     //Nombre de métodos
     private String METHOD_NAME_LOGIN = "login_user";
     private String METHOD_GET_TALLERES = "get_talleres";
+    private String METHOD_GET_BLOQUES = "get_bloques";
+    private String METHOD_GET_CATEGORIES = "get_categories";
 
     //Getters
     public String getNAMESPACE() {
@@ -34,5 +36,13 @@ public class WebServicesConfiguration extends Application {
 
     public String getMETHOD_GET_TALLERES() {
         return METHOD_GET_TALLERES;
+    }
+
+    public String getMETHOD_GET_BLOQUES() {
+        return METHOD_GET_BLOQUES;
+    }
+
+    public String getMETHOD_GET_CATEGORIES() {
+        return METHOD_GET_CATEGORIES;
     }
 }
