@@ -283,7 +283,6 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
             mToolbar.setTitle(item.getTitle());
         }
 
-        //listRobots = getSetRobotList();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.rl_fragment_container, frag, "mainFrag");
         ft.commit();
@@ -299,36 +298,40 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
      * the user.
      */
     public class UserBloqueTask extends AsyncTask<Void, Void, Boolean> {
-        
+
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            ArrayList<String> name_categories = new ArrayList<String>();
-            ArrayList<String> brands1 = new ArrayList<String>();
 
-            ArrayList<String> idCategory = new ArrayList<String>();
-
+            SoapObject request, response;
+            Vector<?> responseVector, responseVector1;
             try {
                 //Configuración del web service a consumir
                 HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
-                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_BLOQUES());
+                request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_BLOQUES());
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
                 httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_BLOQUES(), envelope);
-                SoapObject response = (SoapObject) envelope.bodyIn;
-                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+                response = (SoapObject) envelope.bodyIn;
+                responseVector = (Vector<?>) response.getProperty(0);
+
+                request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_CATEGORIES());
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_CATEGORIES(), envelope);
+                response = (SoapObject) envelope.bodyIn;
+                responseVector1 = (Vector<?>) response.getProperty(0);
+
+
                 String categoryB = "";
                 String titleB = "";
                 String descriptionB = "";
-                int[] categories = new int[]{1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5};
-                int category=0;
+
                 String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
                         "iniciar","esperar","bucle","interruptor","interrupcion_bucle",
                         "sensor_ultrasonico","sensor_infrarrojo","sensor_girosensor","sensor_color","rotacion_motor","sensor_tactil","temporizador","botones","sensor_sonido","sensor_temperatura","energia",
                         "constante","variable","operaciones_secuenciales","operaciones_logicas","matematica","redondear","comparar","rango","texto","aleatorio",
                         "acceso_archivo","mandar_mensaje","conexion_bluetooth","mantener_activo","comentario","sensor_sin_procesar","detener","invertir_motor","motor_sin_regular"};
-
 
 
                 for (int i = 0; i <responseVector.size(); ++i) {
@@ -337,19 +340,21 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                     titleB             = datos.getProperty("Title").toString();
                     descriptionB       = datos.getProperty("Description").toString();
 
-                    Robot c = new Robot( titleB, categoryB, descriptionB );
+                    for (int j = 0; j <responseVector1.size(); ++j) {
+                        SoapObject datos1 =(SoapObject)responseVector1.get(j);
+                        if(categoryB.equals(datos1.getProperty("idCategory").toString()) ){
 
-                    //c.setPhoto(photos[i % photos.length]);
-                    c.setCategory(categories[i % categories.length]);
+                            Robot c = new Robot( titleB, datos1.getProperty("Name").toString(), descriptionB );
 
-                    c.setUrl(url[i % url.length]);
+                            //c.setPhoto(photos[i % photos.length]);
+                            c.setCategory(Integer.parseInt(datos1.getProperty("idCategory").toString()));
 
+                            c.setUrl(url[i % url.length]);
+                            listRobots.add(c);
 
-                    if(category != 0 && c.getCategory() != category){
-                        continue;
+                            break;
+                        }
                     }
-                    listRobots.add(c);
-
                 }
 
             } catch (Exception e) {
