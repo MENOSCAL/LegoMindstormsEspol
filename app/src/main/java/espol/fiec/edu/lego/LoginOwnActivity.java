@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Vector;
 
 
+import espol.fiec.edu.lego.domain.Person;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -71,8 +73,12 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     private View mProgressView;
     private View mLoginFormView;
 
+    private Person person;
+
     //Web services
     private WebServicesConfiguration wsConf;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -335,18 +341,26 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 Vector<?> responseVector = (Vector<?>) response.getProperty(0);
                 String id = "";
+                String name = "";
                 String username = "";
                 String email = "";
                 String password = "";
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
                     id          = datos.getProperty("idUser").toString();
-                    username    = datos.getProperty("username").toString();
-                    email       = datos.getProperty("email").toString();
-                    password    = datos.getProperty("password").toString();
+                    name    = datos.getProperty("Name").toString();
+                    username    = datos.getProperty("Username").toString();
+                    email       = datos.getProperty("Email").toString();
+                    password    = datos.getProperty("Password").toString();
+
+                    person = new Person();
+                    person.setName(name);
+                    person.setUsername(username);
+
                 }
                 if(responseVector != null){
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                    i.putExtra("persona", person);
                     startActivity(i);
                 }
 
@@ -381,7 +395,8 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
-
-
+    public Person getPerson() {
+        return person;
+    }
 }
 
