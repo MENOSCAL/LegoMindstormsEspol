@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="espol.fiec.edu.lego" >
+    package="espol.fiec.edu.lego">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,15 +10,13 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name=".WebServicesConfiguration"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="espol.fiec.edu.lego.WebServicesConfiguration" >
-
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -29,94 +27,73 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-            -->
+        -->
 
-            <activity
-                android:name=".MenuActivity"
-                android:label="@string/app_name"
-                android:theme="@style/AppTheme" >
-
-
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-
-            </activity>
-
-
-        <activity android:name=".FirstActivity" android:configChanges=
-            "keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
-
-
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".FirstActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
         <activity android:name=".GuiaUsoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MenuActivity" />
         </activity>
-        <activity android:name=".PDFViewerActivity" >
+        <activity android:name=".PDFViewerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GuiaUsoActivity" />
         </activity>
-        <activity android:name=".PDFViewActivity" >
+        <activity android:name=".PDFViewActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GuiaUsoActivity" />
         </activity>
-        <activity android:name=".ListaTalleresActivity" >
+        <activity android:name=".ListaTalleresActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MenuActivity" />
         </activity>
-        <activity android:name=".TallerActivity" >
+        <activity android:name=".TallerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ListaTalleresActivity" />
         </activity>
-
         <activity android:name=".TestActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ListaTalleresActivity" />
         </activity>
-
         <activity android:name=".RobotActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".LoginPluginActivity">
-
-        </activity>
+        <activity android:name=".LoginPluginActivity"></activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="95d8876c7fbcf7c4bbb63b5d0cb59b843631899d" />
 
         <activity android:name=".PerfilActivity" />
-
         <activity
             android:name=".LoginOwnActivity"
-            android:label="@string/title_activity_login_own" >
-
-            <!--
-
+            android:label="@string/title_activity_login_own">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
-
         </activity>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
-
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".RegistroUsuario"></activity>
     </application>
 
 </manifest>
