@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import espol.fiec.edu.lego.domain.Person;
 import lecho.lib.hellocharts.model.PieChartData;
 
 import lecho.lib.hellocharts.model.SliceValue;
@@ -29,7 +30,15 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
 
         mToolbar = (Toolbar) findViewById(R.id.tb_perfil);
-        mToolbar.setTitle("Usuario1");
+
+        Person person = (Person) getIntent().getExtras().getSerializable("persona");
+        if(person != null){
+            mToolbar.setTitle(person.getName());
+        }else {
+            mToolbar.setTitle("Usuario1");
+        }
+
+
         mToolbar.setLogo(R.drawable.foto);
         setSupportActionBar(mToolbar);
 

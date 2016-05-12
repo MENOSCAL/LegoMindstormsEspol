@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Vector;
 
 
+import espol.fiec.edu.lego.domain.Person;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -71,8 +73,12 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     private View mProgressView;
     private View mLoginFormView;
 
+    private Person person;
+
     //Web services
     private WebServicesConfiguration wsConf = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,9 +347,15 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     String username    = datos.getProperty("Username").toString();
                     String email       = datos.getProperty("Email").toString();
                     String password    = datos.getProperty("Password").toString();
+
+                    person = new Person();
+                    person.setName(name);
+                    person.setUsername(username);
+
                 }
                 if(responseVector != null){
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                    i.putExtra("persona", person);
                     startActivity(i);
                 }
 
@@ -378,7 +390,8 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
-
-
+    public Person getPerson() {
+        return person;
+    }
 }
 
