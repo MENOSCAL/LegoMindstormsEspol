@@ -31,9 +31,10 @@ public class PerfilActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.tb_perfil);
 
-        Person person = (Person) getIntent().getExtras().getSerializable("persona");
-        if(person != null){
-            mToolbar.setTitle(person.getName());
+        String name= LoginOwnActivity.nameS;
+
+        if(name != null){
+            mToolbar.setTitle(name);
         }else {
             mToolbar.setTitle("Usuario1");
         }

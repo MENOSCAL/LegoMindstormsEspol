@@ -102,11 +102,7 @@ public class MenuActivity extends AppCompatActivity
         Intent it = null;
 
         if (id == R.id.nav_perfil) {
-            Intent i = new Intent(getApplicationContext(), PerfilActivity.class);
-            Person person = (Person) getIntent().getExtras().getSerializable("persona");
-            i.putExtra("persona", person);
-            startActivity(i);
-            //startActivity(new Intent(this,PerfilActivity.class));
+            startActivity(new Intent(this,PerfilActivity.class));
 
         } else if (id == R.id.nav_programacion) {
             startActivity(new Intent(this,FirstActivity.class));

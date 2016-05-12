@@ -74,6 +74,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     private View mLoginFormView;
 
     private Person person;
+    static String nameS;
 
     //Web services
     private WebServicesConfiguration wsConf = null;
@@ -348,14 +349,15 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     String email       = datos.getProperty("Email").toString();
                     String password    = datos.getProperty("Password").toString();
 
-                    person = new Person();
-                    person.setName(name);
-                    person.setUsername(username);
+                    //person = new Person();
+                    //person.setName(name);
+                    //person.setUsername(username);
+
+                    nameS=name;
 
                 }
                 if(responseVector != null){
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-                    i.putExtra("persona", person);
                     startActivity(i);
                 }
 
