@@ -6,10 +6,10 @@
  * https://www.binpress.com/tutorial/using-php-with-mysql-the-right-way/17
  */
 
-define('DB_SERVER','');
-define('DB_NAME','');
-define('DB_USER','');
-define('DB_PASS','');
+define('DB_SERVER','108.167.133.34');
+define('DB_NAME','connie_lego');
+define('DB_USER','connie_usrlego');
+define('DB_PASS','!HPhdbnXU6iC');
 
 function db_connect() {
     // Define connection as a static variable, to avoid connecting more than once 
