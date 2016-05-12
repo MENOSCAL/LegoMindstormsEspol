@@ -12,7 +12,7 @@ public class WebServicesConfiguration extends Application {
     private String SOAP_ACTION = "urn:HogarDeCristo#";
 
     //Nombre de métodos
-    private String METHOD_NAME_LOGIN = "login_user";
+    private String METHOD_LOGIN_USER = "login_user";
     private String METHOD_GET_TALLERES = "get_talleres";
     private String METHOD_GET_BLOQUES = "get_bloques";
     private String METHOD_GET_CATEGORIES = "get_categories";
@@ -30,8 +30,8 @@ public class WebServicesConfiguration extends Application {
         return SOAP_ACTION;
     }
 
-    public String getMETHOD_NAME_LOGIN() {
-        return METHOD_NAME_LOGIN;
+    public String getMETHOD_LOGIN_USER() {
+        return METHOD_LOGIN_USER;
     }
 
     public String getMETHOD_GET_TALLERES() {

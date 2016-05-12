@@ -72,7 +72,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     private View mLoginFormView;
 
     //Web services
-    private WebServicesConfiguration wsConf;
+    private WebServicesConfiguration wsConf = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,7 +323,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
             try {
                 //Configuración del web service a consumir
                 HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
-                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_NAME_LOGIN());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_LOGIN_USER());
                 //Agregando parametros del método
                 request.addProperty("email", mEmail);
                 request.addProperty("password", mPassword);
@@ -331,19 +331,16 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
-                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_NAME_LOGIN(), envelope);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_LOGIN_USER(), envelope);
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 Vector<?> responseVector = (Vector<?>) response.getProperty(0);
-                String id = "";
-                String username = "";
-                String email = "";
-                String password = "";
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
-                    id          = datos.getProperty("idUser").toString();
-                    username    = datos.getProperty("username").toString();
-                    email       = datos.getProperty("email").toString();
-                    password    = datos.getProperty("password").toString();
+                    String id          = datos.getProperty("idUser").toString();
+                    String name    = datos.getProperty("Name").toString();
+                    String username    = datos.getProperty("Username").toString();
+                    String email       = datos.getProperty("Email").toString();
+                    String password    = datos.getProperty("Password").toString();
                 }
                 if(responseVector != null){
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
