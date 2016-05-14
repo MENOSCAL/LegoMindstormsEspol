@@ -133,8 +133,7 @@ public class MenuActivity extends AppCompatActivity
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * Represents an asynchronous  task used to get talleres from data base
      */
     public class GetTalleresTask extends AsyncTask<Void, Void, Boolean> {
 

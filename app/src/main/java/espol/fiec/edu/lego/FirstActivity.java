@@ -294,8 +294,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * Represents an asynchronous task to get bloques data from database
      */
     public class UserBloqueTask extends AsyncTask<Void, Void, Boolean> {
 

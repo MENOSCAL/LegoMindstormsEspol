@@ -1,20 +1,27 @@
 package espol.fiec.edu.lego;
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.BreakIterator;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+import espol.fiec.edu.lego.domain.Pregunta;
+import espol.fiec.edu.lego.domain.Respuesta;
 
 /**
  * Created by Usuario on 16/04/2016.
@@ -36,7 +43,24 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private float puntaje;
 
     private String tallerName;
-    private int tallerId;
+    private int idTaller;
+
+    private int idPregunta;
+    private int idPregunta1, idPregunta2, idPregunta3, idPregunta4, idPregunta5;
+    private int numeroPregunta;
+
+    //Web services
+    private WebServicesConfiguration wsConf;
+
+    private ArrayList<Pregunta> listPreguntas;
+    private ArrayList<Respuesta> listRespuestasPreg1;
+    private ArrayList<Respuesta> listRespuestasPreg2;
+    private ArrayList<Respuesta> listRespuestasPreg3;
+    private ArrayList<Respuesta> listRespuestasPreg4;
+    private ArrayList<Respuesta> listRespuestasPreg5;
+
+    private GetPreguntasTask getPreguntasTask;
+    private GetRespuestasTask getRespuestasTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +69,31 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
         Bundle bolsaR = getIntent().getExtras();
         tallerName = bolsaR.getString("tallerNameKey");
-        tallerId = bolsaR.getInt("tallerIdKey");
+        idTaller = bolsaR.getInt("tallerIdKey");
+        idPregunta = 0;
+        idPregunta1 = 0;
+        idPregunta2 = 0;
+        idPregunta3 = 0;
+        idPregunta4 = 0;
+        idPregunta5 = 0;
+        numeroPregunta = 0;
 
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
-        mToolbar.setTitle("Test "+ tallerName + "  --  "+tallerId);
+        mToolbar.setTitle("Test "+ tallerName + "  --  "+idTaller);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        listPreguntas =  new ArrayList<Pregunta>();
+        listRespuestasPreg1 = new ArrayList<Respuesta>();
+        listRespuestasPreg2 = new ArrayList<Respuesta>();
+        listRespuestasPreg3 = new ArrayList<Respuesta>();
+        listRespuestasPreg4 = new ArrayList<Respuesta>();
+        listRespuestasPreg5 = new ArrayList<Respuesta>();
 
+        wsConf = (WebServicesConfiguration) getApplicationContext();
+
+        getPreguntasTask = new GetPreguntasTask();
+        getPreguntasTask.execute((Void) null);
 
         puntaje = 0;
 
@@ -70,29 +111,53 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
         //Aqui debo buscar las preguntas de un taller, busqueda se realiza por id del taller
 
+        /*
         addPreguntaFromServer("Pregunta1", 1);
         addPreguntaFromServer("Pregunta2", 2);
         addPreguntaFromServer("Pregunta3", 3);
         addPreguntaFromServer("Pregunta4", 4);
         addPreguntaFromServer("Pregunta5", 5);
+        */
 
         btnFinalizar = (Button) findViewById(R.id.btnFinalizar);
 
         btnFinalizar.setOnClickListener(this);
     }
 
-    public void addPreguntaFromServer(String textPregunta, int numeroPregunta){
+    public void addPreguntaFromServer(String textPregunta, int numeroPregunta, int idPregunta){
         String txtPreguntaId = "txtPregunta"+numeroPregunta;
         TextView tvPregunta = (TextView) findViewById(getResources().getIdentifier(txtPreguntaId, "id", getPackageName()));
         tvPregunta.setText(textPregunta);
 
+
+        //addPreguntaFromServer(preg.getName(), preg.getIdPregunta() ,i+1);
+        //this.numeroPregunta = numeroPregunta;
+
+        this.idPregunta = idPregunta;
+        this.numeroPregunta = numeroPregunta;
+
+        wsConf = (WebServicesConfiguration) getApplicationContext();
+
+        getRespuestasTask = new GetRespuestasTask();
+        //getRespuestasTask.execute((Void) null);
+
+        getRespuestasTask.execute(idPregunta, numeroPregunta);
+
+        /*
         //Añadir texto a las opciones de la pregunta;
         for(int i=1; i<5; i++){
-            String rbId = "rbPregunta"+numeroPregunta+"Opcion"+i;
-            RadioButton resppregunta1 = (RadioButton) findViewById(getResources().getIdentifier(rbId, "id", getPackageName()));
-            resppregunta1.setText(rbId);
+            addOpcionesPregunta(numeroPregunta, idPregunta, i);
         }
+        */
+    }
 
+    public void addOpcionesPregunta(int numeroPregunta, int numOpcion, String textOpcion){
+        String rbId = "rbPregunta"+numeroPregunta+"Opcion"+numOpcion;
+        RadioButton resppregunta = (RadioButton) findViewById(getResources().getIdentifier(rbId, "id", getPackageName()));
+
+        //this.idPregunta = idPregunta;
+        //add opcion
+        resppregunta.setText(textOpcion);
     }
 
     @Override
@@ -130,6 +195,151 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             }
+        }
+    }
+
+    /**
+     * Represents an asynchronous  task used to get preguntas from data base
+     */
+    public class GetPreguntasTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                //Configuración del web service a consumir
+                HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_PREGUNTAS());
+                //Agregando parametros del método
+                request.addProperty("idTaller",Integer.toString(idTaller));
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+                envelope.dotNet = true;
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                SoapObject response = (SoapObject) envelope.bodyIn;
+                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+
+                for (int i = 0; i <responseVector.size(); ++i) {
+                    SoapObject datos =(SoapObject)responseVector.get(i);
+                    listPreguntas.add(new Pregunta(datos.getProperty("idPregunta").toString(),datos.getProperty("Taller_idTaller").toString(),datos.getProperty("Name").toString()));
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("Respuesta", "excepción");
+                Log.i("Respuesta",e.toString());
+                return false;
+            }
+
+            // TODO: register the new account here.
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+           for(int i=0; i<listPreguntas.size(); i++){
+               Pregunta preg = listPreguntas.get(i);
+               addPreguntaFromServer(preg.getName(),i+1,  preg.getIdPregunta());
+           }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+    }
+
+    /**
+     * Represents an asynchronous  task used to get respuestas from data base
+     */
+    public class GetRespuestasTask extends AsyncTask<Integer, Integer, Boolean> {
+
+        private int idPreguntaAsyncTask;
+        private int numPreguntaAsyncTask;
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            // TODO: attempt authentication against a network service.
+            idPreguntaAsyncTask = params[0];
+            numPreguntaAsyncTask = params[1];
+
+            try {
+                //Configuración del web service a consumir
+                HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_RESPUESTAS());
+                //Agregando parametros del método
+                request.addProperty("idPregunta",Integer.toString(idPreguntaAsyncTask));
+
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+                envelope.dotNet = true;
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                SoapObject response = (SoapObject) envelope.bodyIn;
+                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+
+                for (int i = 0; i <responseVector.size(); ++i) {
+                    SoapObject datos =(SoapObject)responseVector.get(i);
+                    if(numPreguntaAsyncTask == 1){
+                        listRespuestasPreg1.add(new Respuesta(datos.getProperty("idRespuesta").toString(), datos.getProperty("Pregunta_idPregunta").toString(), datos.getProperty("Name").toString()));
+                    }
+                    if(numPreguntaAsyncTask == 2){
+                        listRespuestasPreg2.add(new Respuesta(datos.getProperty("idRespuesta").toString(), datos.getProperty("Pregunta_idPregunta").toString(), datos.getProperty("Name").toString()));
+                    }
+                    if(numPreguntaAsyncTask == 3){
+                        listRespuestasPreg3.add(new Respuesta(datos.getProperty("idRespuesta").toString(), datos.getProperty("Pregunta_idPregunta").toString(), datos.getProperty("Name").toString()));
+                    }
+                    if(numPreguntaAsyncTask == 4){
+                        listRespuestasPreg4.add(new Respuesta(datos.getProperty("idRespuesta").toString(), datos.getProperty("Pregunta_idPregunta").toString(), datos.getProperty("Name").toString()));
+                    }
+                    if(numPreguntaAsyncTask == 5){
+                        listRespuestasPreg5.add(new Respuesta(datos.getProperty("idRespuesta").toString(), datos.getProperty("Pregunta_idPregunta").toString(), datos.getProperty("Name").toString()));
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("Respuesta", "excepción");
+                Log.i("Respuesta",e.toString());
+                return false;
+            }
+
+            // TODO: register the new account here.
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            //Añadir texto a las opciones de la pregunta;
+            for(int i=0; i<4; i++){
+                Respuesta resp =  new Respuesta();
+                if(numPreguntaAsyncTask == 1){
+                    resp = listRespuestasPreg1.get(i);
+                }
+                if(numPreguntaAsyncTask == 2){
+                    resp = listRespuestasPreg2.get(i);
+                }
+                if(numPreguntaAsyncTask == 3){
+                    resp = listRespuestasPreg3.get(i);
+                }
+                if(numPreguntaAsyncTask == 4){
+                    resp = listRespuestasPreg4.get(i);
+                }
+                if(numPreguntaAsyncTask == 5){
+                    resp = listRespuestasPreg5.get(i);
+                }
+                addOpcionesPregunta(numPreguntaAsyncTask,  i+1, resp.getName());
+
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
         }
     }
 }

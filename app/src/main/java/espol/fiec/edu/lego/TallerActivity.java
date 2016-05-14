@@ -64,7 +64,8 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         Log.i("Set Flipper Called", res + "");
         ImageView image = new ImageView(getApplicationContext());
 
-        new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/"+taller+"/"+res+".jpg", image).execute();
+        //new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/"+taller+"/"+res+".jpg", image).execute();
+        new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/Taller01/"+res+".jpg", image).execute();
 
         viewFlipperInstrucciones.addView(image);
     }

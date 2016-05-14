@@ -98,13 +98,13 @@ public class ListaTalleresActivity  extends AppCompatActivity {
                 //Aqui debo saltar a la pantalla del taller
                 Intent tallerActivity = new Intent(ListaTalleresActivity.this, TallerActivity.class);
 
-                /*
+
                 Bundle bolsa=new Bundle();
                 bolsa.putString("tallerNameKey", title);
                 bolsa.putInt("tallerIdKey", idTaller);
 
                 tallerActivity.putExtras(bolsa);
-                */
+
 
                 startActivity(tallerActivity);
             }
