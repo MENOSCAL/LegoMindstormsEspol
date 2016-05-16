@@ -13,11 +13,18 @@ public class Respuesta {
     public Respuesta() {
     }
 
-    public Respuesta(String idRespuesta, String idPregunta, String name, boolean valido) {
+    public Respuesta(String idRespuesta, String idPregunta, String name, String valido) {
         this.idRespuesta = Integer.parseInt(idRespuesta);
         this.idPregunta = Integer.parseInt(idPregunta);
         this.name = name;
-        this.valido = valido;
+
+        if(valido.equals("1")){
+            this.valido = true;
+        }
+        else{
+            this.valido = false;
+        }
+
     }
 
     public Respuesta(String idRespuesta, String idPregunta, String name) {

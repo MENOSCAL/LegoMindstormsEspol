@@ -56,7 +56,8 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         txtIniciarTaller = (TextView) findViewById(R.id.txtIniciarTest);
 
         btnAnterior = (Button) findViewById(R.id.btnAnterior);
-        btnAnterior.setClickable(false);
+        btnAnterior.setEnabled(false);
+        //btnAnterior.setClickable(false);
 
         btnSiguiente = (Button) findViewById(R.id.btnSiguiente);
 
@@ -83,11 +84,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setFlipperImage( String urlImagen) {
-        //Log.i("Set Flipper Called", res + "");
         ImageView image = new ImageView(getApplicationContext());
-
-        //new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/"+taller+"/"+res+".jpg", image).execute();
-        //new ImageLoadTask("http://www.corporacionsmartest.com/lego_mindstorm/Talleres/Taller01/"+res+".jpg", image).execute();
         new ImageLoadTask(urlImagen, image).execute();
 
         viewFlipperInstrucciones.addView(image);
@@ -100,13 +97,16 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btnSiguiente:{
                 viewFlipperInstrucciones.showNext();
 
-                if(viewFlipperInstrucciones.getDisplayedChild() != 0){
-                    btnAnterior.setClickable(true);
+                if(viewFlipperInstrucciones.getDisplayedChild() == (listImagenesTaller.size() -1)){
+                    btnSiguiente.setEnabled(false);
+                    txtIniciarTaller.setVisibility(View.VISIBLE);
+                }
+                else{
+                    btnSiguiente.setEnabled(true);
                 }
 
-                //Cuando se llega a la ultima imagen
-                if(viewFlipperInstrucciones.getDisplayedChild() == 2){
-                    txtIniciarTaller.setVisibility(View.VISIBLE);
+                if(viewFlipperInstrucciones.getDisplayedChild()!=0){
+                    btnAnterior.setEnabled(true);
                 }
 
                 break;
@@ -114,10 +114,15 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btnAnterior: {
                 viewFlipperInstrucciones.showPrevious();
 
+                if(viewFlipperInstrucciones.getDisplayedChild() != (listImagenesTaller.size() -1)){
+                    btnSiguiente.setEnabled(true);
+                    txtIniciarTaller.setVisibility(View.GONE);
+                }
+
                 if (viewFlipperInstrucciones.getDisplayedChild() == 0) {
-                    btnAnterior.setClickable(false);
+                    btnAnterior.setEnabled(false);
                 } else {
-                    btnSiguiente.setClickable(true);
+                    btnSiguiente.setEnabled(true);
                 }
                 break;
             }

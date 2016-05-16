@@ -23,6 +23,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import espol.fiec.edu.lego.asynctasks.ImageLoadTask;
 import espol.fiec.edu.lego.domain.Taller;
 
 /**
@@ -34,7 +35,6 @@ public class ListaTalleresActivity  extends AppCompatActivity {
     private ViewGroup layoutParent;
 
     private ArrayList<Taller> listTalleres;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +53,11 @@ public class ListaTalleresActivity  extends AppCompatActivity {
 
         for(int i=0; i<listTalleres.size(); i++){
             Taller taller = listTalleres.get(i);
-            addTaller(layoutParent, taller.getTitle(), taller.getIdTaller());
+            addTaller(layoutParent, taller.getTitle(), taller.getIdTaller(), taller.getUrlImagen());
         }
     }
 
-    public void addTaller(ViewGroup layoutParent, final String title, final int idTaller){
+    public void addTaller(ViewGroup layoutParent, final String title, final int idTaller, String urlImage){
         final float scale = getResources().getDisplayMetrics().density;
         int padding_10dp = (int) (10 * scale + 0.5f);
         int padding_15dp = (int) (15 * scale + 0.5f);
@@ -84,8 +84,10 @@ public class ListaTalleresActivity  extends AppCompatActivity {
         layoutTaller.addView(valueTV);
 
         //Imagen del robot
-        ImageView ivRobot = new ImageView(this);
-        ivRobot.setBackgroundDrawable(getResources().getDrawable(R.drawable.tracker));
+        ImageView ivRobot = new ImageView(getApplicationContext());
+        new ImageLoadTask(urlImage, ivRobot).execute();
+
+        ivRobot.setBackgroundDrawable(getResources().getDrawable(R.drawable.whitebackground));
 
         LinearLayout.LayoutParams ivRobotLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ivRobot.setLayoutParams(ivRobotLayoutParams);

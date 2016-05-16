@@ -157,9 +157,6 @@ public class MenuActivity extends AppCompatActivity
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
                     listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString(),datos.getProperty("Image").toString()));
-
-                    System.out.println("Title: "+ datos.getProperty("Title").toString());
-                    System.out.println("id taller: "+ datos.getProperty("idTaller").toString());
                 }
                 /*
                 if(responseVector != null){
