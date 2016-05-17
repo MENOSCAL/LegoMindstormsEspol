@@ -294,8 +294,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * Represents an asynchronous task to get bloques data from database
      */
     public class UserBloqueTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -323,22 +322,27 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                 responseVector1 = (Vector<?>) response.getProperty(0);
 
 
+
                 String categoryB = "";
                 String titleB = "";
                 String descriptionB = "";
+                String urlB = "";
 
-                String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
+                /*String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
                         "iniciar","esperar","bucle","interruptor","interrupcion_bucle",
                         "sensor_ultrasonico","sensor_infrarrojo","sensor_girosensor","sensor_color","rotacion_motor","sensor_tactil","temporizador","botones","sensor_sonido","sensor_temperatura","energia",
                         "constante","variable","operaciones_secuenciales","operaciones_logicas","matematica","redondear","comparar","rango","texto","aleatorio",
                         "acceso_archivo","mandar_mensaje","conexion_bluetooth","mantener_activo","comentario","sensor_sin_procesar","detener","invertir_motor","motor_sin_regular"};
-
+                */
 
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
                     categoryB          = datos.getProperty("Category_idCategory").toString();
                     titleB             = datos.getProperty("Title").toString();
                     descriptionB       = datos.getProperty("Description").toString();
+                    urlB               = datos.getProperty("Image").toString();
+
+                    Log.i("Respuesta", "hello");
 
                     for (int j = 0; j <responseVector1.size(); ++j) {
                         SoapObject datos1 =(SoapObject)responseVector1.get(j);
@@ -348,8 +352,9 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
                             //c.setPhoto(photos[i % photos.length]);
                             c.setCategory(Integer.parseInt(datos1.getProperty("idCategory").toString()));
+                            c.setUrl(urlB);
+                            //c.setUrl(url[i % url.length]);
 
-                            c.setUrl(url[i % url.length]);
                             listRobots.add(c);
 
                             break;

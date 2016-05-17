@@ -17,6 +17,10 @@ public class WebServicesConfiguration extends Application {
     private String METHOD_GET_BLOQUES = "get_bloques";
     private String METHOD_GET_CATEGORIES = "get_categories";
     private String METHOD_GET_INSERT_USER = "insert_user";
+    private String METHOD_GET_PREGUNTAS = "get_preguntas";
+    private String METHOD_GET_RESPUESTAS = "get_respuestas";
+    private String METHOD_GET_IMAGEN_TALLER = "get_imagen_taller";
+    private String METHOD_INSERT_USER_TALLER = "insert_user_taller";
 
     //Getters
     public String getNAMESPACE() {
@@ -49,5 +53,21 @@ public class WebServicesConfiguration extends Application {
 
     public String getMETHOD_GET_INSERT_USER() {
         return METHOD_GET_INSERT_USER;
+    }
+    
+    public String getMETHOD_GET_PREGUNTAS() {
+        return METHOD_GET_PREGUNTAS;
+    }
+
+    public String getMETHOD_GET_RESPUESTAS() {
+        return METHOD_GET_RESPUESTAS;
+    }
+
+    public String getMETHOD_GET_IMAGEN_TALLER() {
+        return METHOD_GET_IMAGEN_TALLER;
+    }
+
+    public String getMETHOD_INSERT_USER_TALLER() {
+        return METHOD_INSERT_USER_TALLER;
     }
 }

@@ -133,8 +133,7 @@ public class MenuActivity extends AppCompatActivity
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * Represents an asynchronous  task used to get talleres from data base
      */
     public class GetTalleresTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -157,7 +156,7 @@ public class MenuActivity extends AppCompatActivity
 
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
-                    listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString()));
+                    listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString(),datos.getProperty("Image").toString()));
                 }
                 /*
                 if(responseVector != null){

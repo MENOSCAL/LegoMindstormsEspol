@@ -77,7 +77,8 @@ public class RobotAdapter extends RecyclerView.Adapter<RobotAdapter.MyViewHolder
         }
 */
 
-        new ImageLoad("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+mList.get(position).getUrl()+".jpg" , holder.ivRobot, mContext, width, height).execute();
+        //new ImageLoad("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+mList.get(position).getUrl()+".jpg" , holder.ivRobot, mContext, width, height).execute();
+        new ImageLoad(mList.get(position).getUrl() , holder.ivRobot, mContext, width, height).execute();
 
         try {
             YoYo.with(Techniques.Tada)

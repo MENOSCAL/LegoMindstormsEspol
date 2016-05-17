@@ -46,7 +46,8 @@ public class RobotActivity extends AppCompatActivity {
         //TextView tvBrand = (TextView) findViewById(R.id.tv_brand);
         TextView tvDescription = (TextView) findViewById(R.id.tv_description);
 
-        new ImageLoadRobot("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+robot.getUrl()+".jpg" , ivRobot).execute();
+        //new ImageLoadRobot("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+robot.getUrl()+".jpg" , ivRobot).execute();
+        new ImageLoadRobot(robot.getUrl() , ivRobot).execute();
 
         //ivRobot.setImageResource(robot.getPhoto());
         tvModel.setText(robot.getTitle());
