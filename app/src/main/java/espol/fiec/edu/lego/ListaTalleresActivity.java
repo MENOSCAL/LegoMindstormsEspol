@@ -53,11 +53,11 @@ public class ListaTalleresActivity  extends AppCompatActivity {
 
         for(int i=0; i<listTalleres.size(); i++){
             Taller taller = listTalleres.get(i);
-            addTaller(layoutParent, taller.getTitle(), taller.getIdTaller(), taller.getUrlImagen());
+            addTaller(layoutParent, taller.getTitle(), taller.getIdTaller(), taller.getUrlImagen(),"50");
         }
     }
 
-    public void addTaller(ViewGroup layoutParent, final String title, final int idTaller, String urlImage){
+    public void addTaller(ViewGroup layoutParent, final String title, final int idTaller, String urlImage, String puntaje){
         final float scale = getResources().getDisplayMetrics().density;
         int padding_10dp = (int) (10 * scale + 0.5f);
         int padding_15dp = (int) (15 * scale + 0.5f);
@@ -73,15 +73,29 @@ public class ListaTalleresActivity  extends AppCompatActivity {
         layoutTallerParams.setMargins(0, 0, 0, padding_10dp);
 
         //TITULO DEL ROBOT
-        TextView valueTV = new TextView(this);
-        valueTV.setText(title);
-        valueTV.setTextSize((int) (10 * scale + 0.5f));
-        valueTV.setTextColor(getResources().getColor(R.color.colorPrimary));
+        TextView tituloRobotTV = new TextView(this);
+        tituloRobotTV.setText(title);
+        tituloRobotTV.setTextSize((int) (10 * scale + 0.5f));
+        tituloRobotTV.setTextColor(getResources().getColor(R.color.colorPrimary));
         LinearLayout.LayoutParams tvLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         tvLayoutParams.gravity = Gravity.CENTER;
 
-        valueTV.setLayoutParams(tvLayoutParams);
-        layoutTaller.addView(valueTV);
+        tituloRobotTV.setLayoutParams(tvLayoutParams);
+        layoutTaller.addView(tituloRobotTV);
+
+        //Puntaje del estudiante obtenido en el taller,
+        //en el caso que se haya completado el taller previamente
+        if(!puntaje.equals("")) {
+            //Se agrega el puntaje solo si el suario ha finalizado el test previamente y ha obtenido una calificación
+            TextView puntajeTV = new TextView(this);
+            puntajeTV.setText("Puntaje: " + puntaje);
+            puntajeTV.setTextSize((int) (6 * scale + 0.5f));
+            puntajeTV.setTextColor(getResources().getColor(R.color.black));
+            LinearLayout.LayoutParams puntajeTvLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            puntajeTV.setLayoutParams(puntajeTvLayoutParams);
+            layoutTaller.addView(puntajeTV);
+        }
 
         //Imagen del robot
         ImageView ivRobot = new ImageView(getApplicationContext());

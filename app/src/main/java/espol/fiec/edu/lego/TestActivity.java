@@ -1,5 +1,6 @@
 package espol.fiec.edu.lego;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
@@ -37,19 +39,14 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btnFinalizar;
 
-    private TextView pregunta1, pregunta2, pregunta3, pregunta4, pregunta5;
 
     private RadioGroup rgPregunta1, rgPregunta2, rgPregunta3, rgPregunta4, rgPregunta5;
     private RadioButton respPregunta1, respPregunta2, respPregunta3, respPregunta4, respPregunta5;
 
-    private float puntaje;
+    private int puntaje;
 
     private String tallerName;
     private int idTaller;
-
-    private int idPregunta;
-    private int idPregunta1, idPregunta2, idPregunta3, idPregunta4, idPregunta5;
-    private int numeroPregunta;
 
     //Web services
     private WebServicesConfiguration wsConf;
@@ -73,16 +70,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bolsaR = getIntent().getExtras();
         tallerName = bolsaR.getString("tallerNameKey");
         idTaller = bolsaR.getInt("tallerIdKey");
-        idPregunta = 0;
-        idPregunta1 = 0;
-        idPregunta2 = 0;
-        idPregunta3 = 0;
-        idPregunta4 = 0;
-        idPregunta5 = 0;
-        numeroPregunta = 0;
 
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
-        mToolbar.setTitle("Test "+ tallerName + "  --  "+idTaller);
+        mToolbar.setTitle("Test "+ tallerName);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -100,12 +90,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
         puntaje = 0;
 
-        pregunta1 = (TextView) findViewById(R.id.txtPregunta1);
-        pregunta2 = (TextView) findViewById(R.id.txtPregunta2);
-        pregunta3 = (TextView) findViewById(R.id.txtPregunta3);
-        pregunta4 = (TextView) findViewById(R.id.txtPregunta4);
-        pregunta5 = (TextView) findViewById(R.id.txtPregunta5);
-
         rgPregunta1 = (RadioGroup) findViewById(R.id.rgPregunta1);
         rgPregunta2 = (RadioGroup) findViewById(R.id.rgPregunta2);
         rgPregunta3 = (RadioGroup) findViewById(R.id.rgPregunta3);
@@ -122,8 +106,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         TextView tvPregunta = (TextView) findViewById(getResources().getIdentifier(txtPreguntaId, "id", getPackageName()));
         tvPregunta.setText(textPregunta);
 
-        this.idPregunta = idPregunta;
-        this.numeroPregunta = numeroPregunta;
 
         wsConf = (WebServicesConfiguration) getApplicationContext();
 
@@ -138,6 +120,18 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         RadioButton resppregunta = (RadioButton) findViewById(getResources().getIdentifier(rbId, "id", getPackageName()));
 
         resppregunta.setText(textOpcion);
+    }
+
+    public boolean checkAnswer(String opcion, ArrayList<Respuesta> listRespuestas){
+        for(int i=0; i<4; i++){
+            Respuesta respuesta = listRespuestas.get(i);
+
+            if(respuesta.getName().equals(opcion)  && respuesta.isValido()){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public ArrayList<Respuesta> shuffleListRespuestaoptions(ArrayList<Respuesta> listRespuestas){
@@ -165,46 +159,59 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnFinalizar: {
-                /////
-                wsConf = (WebServicesConfiguration) getApplicationContext();
+                puntaje = 0;
 
-                insertTallerUserTask = new InsertUserTallerTask();
-                insertTallerUserTask.execute((Void) null);
-
-                ////
-                //Toast.makeText(getApplicationContext(), "Bienvenido presionado", Toast.LENGTH_SHORT).show();
-                //Aqui debo chequear las respuestas del usuario para calcular su puntaje
-                // get selected radio button from radioGroup
                 int selectedPregunta1 = rgPregunta1.getCheckedRadioButtonId();
-                System.out.println("selected: "+ selectedPregunta1);
-                respPregunta1 = (RadioButton) findViewById(selectedPregunta1);
-                String resp1 = (String) respPregunta1.getText();
-                //Se envia respuesta al servidor y verificar si es correcta, si es correcta entonces se suma +10 al puntaje de la leccion
-                System.out.println("resp 1 selected: " + resp1);
-
                 int selectedPregunta2 = rgPregunta2.getCheckedRadioButtonId();
-                System.out.println("selected: "+ selectedPregunta2);
-                respPregunta2 = (RadioButton) findViewById(selectedPregunta2);
-                String resp2 = (String) respPregunta2.getText();
-                System.out.println("resp 2 selected: " + resp2);
-
                 int selectedPregunta3 = rgPregunta3.getCheckedRadioButtonId();
-                System.out.println("selected: "+ selectedPregunta3);
-                respPregunta3 = (RadioButton) findViewById(selectedPregunta3);
-                String resp3 = (String) respPregunta3.getText();
-                System.out.println("resp 3 selected: " + resp3);
-
                 int selectedPregunta4 = rgPregunta4.getCheckedRadioButtonId();
-                System.out.println("selected: "+ selectedPregunta4);
-                respPregunta4 = (RadioButton) findViewById(selectedPregunta4);
-                String resp4 = (String) respPregunta4.getText();
-                System.out.println("resp 4 selected: " + resp4);
-
                 int selectedPregunta5 = rgPregunta5.getCheckedRadioButtonId();
-                System.out.println("selected: "+ selectedPregunta5);
-                respPregunta5 = (RadioButton) findViewById(selectedPregunta5);
-                String resp5 = (String) respPregunta5.getText();
-                System.out.println("resp 5 selected: " + resp5);
+
+                if(selectedPregunta1 == -1 || selectedPregunta2 == -1 || selectedPregunta3 == -1 || selectedPregunta4 == -1 || selectedPregunta5 == -1){
+                    Toast.makeText(getApplicationContext(), "Por favor, debe llenar todas las preguntas", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    respPregunta1 = (RadioButton) findViewById(selectedPregunta1);
+                    String resp1 = (String) respPregunta1.getText();
+                    if(checkAnswer(resp1, listRespuestasPreg1)){
+                        puntaje += 20;
+                    }
+
+                    respPregunta2 = (RadioButton) findViewById(selectedPregunta2);
+                    String resp2 = (String) respPregunta2.getText();
+                    if(checkAnswer(resp2, listRespuestasPreg2)){
+                        puntaje += 20;
+                    }
+
+                    respPregunta3 = (RadioButton) findViewById(selectedPregunta3);
+                    String resp3 = (String) respPregunta3.getText();
+                    if(checkAnswer(resp3, listRespuestasPreg3)){
+                        puntaje += 20;
+                    }
+
+                    respPregunta4 = (RadioButton) findViewById(selectedPregunta4);
+                    String resp4 = (String) respPregunta4.getText();
+                    if(checkAnswer(resp4, listRespuestasPreg4)){
+                        puntaje += 20;
+                    }
+
+                    respPregunta5 = (RadioButton) findViewById(selectedPregunta5);
+                    String resp5 = (String) respPregunta5.getText();
+                    if(checkAnswer(resp5, listRespuestasPreg5)){
+                        puntaje += 20;
+                    }
+
+                    Toast.makeText(getApplicationContext(), "Su calificación final fue de "+puntaje+"/100", Toast.LENGTH_SHORT).show();
+
+                    wsConf = (WebServicesConfiguration) getApplicationContext();
+
+                    insertTallerUserTask = new InsertUserTallerTask();
+                    insertTallerUserTask.execute((Void) null);
+
+                    //Regreso al menú principal
+                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                    startActivity(i);
+                }
 
                 break;
             }
@@ -386,9 +393,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
                 SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_INSERT_USER_TALLER());
                 //Agregando parametros del método
-                request.addProperty("idUser",Integer.toString(3));
-                request.addProperty("idTaller",Integer.toString(2));
-                request.addProperty("puntaje",Integer.toString(90));
+                String idLoggedUser = LoginOwnActivity.idLoggedUser;
+
+                request.addProperty("idUser",idLoggedUser);
+                request.addProperty("idTaller",Integer.toString(idTaller));
+                request.addProperty("puntaje",Integer.toString(puntaje));
 
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;

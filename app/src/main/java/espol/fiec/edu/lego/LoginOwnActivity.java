@@ -77,6 +77,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
 
     private Person person;
     static String nameS;
+    public static String idLoggedUser;
 
     //Web services
     private WebServicesConfiguration wsConf = null;
@@ -368,6 +369,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     //person.setUsername(username);
 
                     nameS=name;
+                    idLoggedUser=id;
 
                 }
                 if(responseVector != null){

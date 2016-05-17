@@ -57,19 +57,10 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
 
         btnAnterior = (Button) findViewById(R.id.btnAnterior);
         btnAnterior.setEnabled(false);
-        //btnAnterior.setClickable(false);
 
         btnSiguiente = (Button) findViewById(R.id.btnSiguiente);
 
         viewFlipperInstrucciones = (ViewFlipper) findViewById(R.id.vfInstrucciones);
-
-        /*
-        for(int i=1;i<4;i++)
-        {
-            //This will create dynamic image view and add them to ViewFlipper
-            setFlipperImage(i, tallerName);
-        }
-        */
 
         wsConf = (WebServicesConfiguration) getApplicationContext();
         listImagenesTaller =  new ArrayList<ImagenTaller>();

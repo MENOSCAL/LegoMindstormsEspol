@@ -146,6 +146,7 @@ public class MenuActivity extends AppCompatActivity
                 HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
                 SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_TALLERES());
 
+                System.out.println("Id Logged User: " + LoginOwnActivity.idLoggedUser);
 
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
@@ -158,12 +159,6 @@ public class MenuActivity extends AppCompatActivity
                     SoapObject datos =(SoapObject)responseVector.get(i);
                     listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString(),datos.getProperty("Image").toString()));
                 }
-                /*
-                if(responseVector != null){
-                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-                    startActivity(i);
-                }
-                */
 
             } catch (Exception e) {
                 e.printStackTrace();
