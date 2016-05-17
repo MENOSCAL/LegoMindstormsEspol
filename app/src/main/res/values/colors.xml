@@ -14,4 +14,7 @@
     <color name="colorFAB">#FF9800</color>
     <color name="colorFABPressed">#F57C00</color>
 
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>

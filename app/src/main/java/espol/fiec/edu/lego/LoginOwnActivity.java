@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Vector;
 
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import espol.fiec.edu.lego.domain.Person;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -78,13 +80,15 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
 
     //Web services
     private WebServicesConfiguration wsConf = null;
+    @Bind(R.id.link_signup) TextView _signupLink;
 
-
+    private static final int REQUEST_SIGNUP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_own);
+        ButterKnife.bind(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -100,6 +104,16 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     return true;
                 }
                 return false;
+            }
+        });
+
+        _signupLink.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Start the Signup activity
+                Intent intent = new Intent(getApplicationContext(), RegistroUsuario.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
 
