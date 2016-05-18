@@ -342,8 +342,6 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                     descriptionB       = datos.getProperty("Description").toString();
                     urlB               = datos.getProperty("Image").toString();
 
-                    Log.i("Respuesta", "hello");
-
                     for (int j = 0; j <responseVector1.size(); ++j) {
                         SoapObject datos1 =(SoapObject)responseVector1.get(j);
                         if(categoryB.equals(datos1.getProperty("idCategory").toString()) ){

@@ -76,7 +76,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
     private View mLoginFormView;
 
     private Person person;
-    static String nameS;
+    public static String nameS;
     public static String idLoggedUser;
 
     //Web services

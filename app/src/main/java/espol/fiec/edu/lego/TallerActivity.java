@@ -39,6 +39,13 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<ImagenTaller> listImagenesTaller;
     private GetImagenesTallerTask getImagenesTallerTask;
 
+    public static boolean Taller1=false;
+    public static boolean Taller2=false;
+    public static boolean Taller3=false;
+    public static boolean Taller4=false;
+    public static boolean Taller5=false;
+    public static boolean Taller6=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +131,23 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
                 Bundle bolsa=new Bundle();
                 bolsa.putString("tallerNameKey", tallerName);
                 bolsa.putInt("tallerIdKey", idTaller);
+
+
+                if(idTaller==1)
+                    Taller1=true;
+                if(idTaller==2)
+                    Taller2=true;
+                if(idTaller==3)
+                    Taller3=true;
+                if(idTaller==4)
+                    Taller4=true;
+                if(idTaller==5)
+                    Taller5=true;
+                if(idTaller==6)
+                    Taller6=true;
+
+
+
 
                 testActivity.putExtras(bolsa);
 
