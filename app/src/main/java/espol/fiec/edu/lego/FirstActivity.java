@@ -29,7 +29,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
     private Toolbar mToolbar;
     private int mItemDrawerSelected;
-    private List<Robot> listRobots;
+    //private List<Robot> listRobots;
 
     //Web services
     private WebServicesConfiguration wsConf;
@@ -37,7 +37,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserBloqueTask mAuthTask = null;
+    //private UserBloqueTask mAuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +50,15 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
 
         if(savedInstanceState != null){
             mItemDrawerSelected = savedInstanceState.getInt("mItemDrawerSelected", 0);
-            listRobots = savedInstanceState.getParcelableArrayList("listRobots");
+            MenuActivity.listRobots = savedInstanceState.getParcelableArrayList("listRobots");
         }
         else{
           //  listRobots = getSetRobotList();
-            listRobots = new ArrayList<Robot>();
-            wsConf = (WebServicesConfiguration) getApplicationContext();
+          //  MenuActivity.listRobots = new ArrayList<Robot>();
+            //wsConf = (WebServicesConfiguration) getApplicationContext();
 
-            mAuthTask = new UserBloqueTask();
-            mAuthTask.execute((Void) null);
+            //mAuthTask = new UserBloqueTask();
+            //mAuthTask.execute((Void) null);
         }
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,6 +77,14 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        //FRAGMENT
+        RobotFragment frag = (RobotFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+        if(frag == null){
+            frag = new RobotFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.rl_fragment_container,frag, "mainFrag");
+            ft.commit();
+        }
     }
 
    /*public List<Robot> getSetRobotList(){
@@ -219,22 +227,22 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
     */
     public List<Robot> getRobotsByCategory(int category){
         List<Robot> listAux = new ArrayList<>();
-        for(int i = 0; i < listRobots.size(); i++){
-            if(category != 0 && listRobots.get(i).getCategory() != category){
+        for(int i = 0; i < MenuActivity.listRobots.size(); i++){
+            if(category != 0 && MenuActivity.listRobots.get(i).getCategory() != category){
                 continue;
             }
-            listAux.add(listRobots.get(i));
+            listAux.add(MenuActivity.listRobots.get(i));
         }
         return(listAux);
     }
     public List<Robot> getListRobots(){
-        return (listRobots);
+        return (MenuActivity.listRobots);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
         outState.putInt("mItemDrawerSelected", mItemDrawerSelected);
-        outState.putParcelableArrayList("ListRobots", (ArrayList<Robot>) listRobots);
+        outState.putParcelableArrayList("ListRobots", (ArrayList<Robot>) MenuActivity.listRobots);
 
         super.onSaveInstanceState(outState);
     }
@@ -296,7 +304,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
     /**
      * Represents an asynchronous task to get bloques data from database
      */
-    public class UserBloqueTask extends AsyncTask<Void, Void, Boolean> {
+   /* public class UserBloqueTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -328,12 +336,7 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                 String descriptionB = "";
                 String urlB = "";
 
-                /*String[] url = new String[]{"motor_mediano","motor_grande","mover_direccion","mover_tanque","pantalla","sonido","luz_estado",
-                        "iniciar","esperar","bucle","interruptor","interrupcion_bucle",
-                        "sensor_ultrasonico","sensor_infrarrojo","sensor_girosensor","sensor_color","rotacion_motor","sensor_tactil","temporizador","botones","sensor_sonido","sensor_temperatura","energia",
-                        "constante","variable","operaciones_secuenciales","operaciones_logicas","matematica","redondear","comparar","rango","texto","aleatorio",
-                        "acceso_archivo","mandar_mensaje","conexion_bluetooth","mantener_activo","comentario","sensor_sin_procesar","detener","invertir_motor","motor_sin_regular"};
-                */
+
 
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
@@ -381,5 +384,5 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
                 ft.commit();
             }
         }
-    }
+    }*/
 }
