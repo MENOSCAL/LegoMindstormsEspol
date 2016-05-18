@@ -21,7 +21,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import espol.fiec.edu.lego.domain.Person;
 import espol.fiec.edu.lego.domain.Taller;
 
 public class MenuActivity extends AppCompatActivity
@@ -33,6 +32,10 @@ public class MenuActivity extends AppCompatActivity
     public static ArrayList<Taller> listTalleres;
 
     private GetTalleresTask getTalleresTask;
+    private GetUserTask getUserTask;
+
+    public static int CantTalleres;
+    public static int CantTalleresReal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +105,10 @@ public class MenuActivity extends AppCompatActivity
         Intent it = null;
 
         if (id == R.id.nav_perfil) {
-            startActivity(new Intent(this,PerfilActivity.class));
+            wsConf = (WebServicesConfiguration) getApplicationContext();
+
+            getUserTask = new GetUserTask();
+            getUserTask.execute((Void) null);
 
         } else if (id == R.id.nav_programacion) {
             startActivity(new Intent(this,FirstActivity.class));
@@ -188,4 +194,64 @@ public class MenuActivity extends AppCompatActivity
         protected void onCancelled() {
         }
     }
+
+    /**
+     * Represents an asynchronous  task used to get talleres from data base
+     */
+    public class GetUserTask extends AsyncTask<Void, Void, Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            CantTalleres=0;
+            CantTalleresReal=0;
+            try {
+                //Configuración del web service a consumir
+                HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(),wsConf.getMETHOD_GET_TALLER_BY_USER());
+                //Agregando parametros del método
+                request.addProperty("idUser",LoginOwnActivity.idLoggedUser);
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+                envelope.dotNet = true;
+                envelope.setOutputSoapObject(request);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLER_BY_USER(), envelope);
+                SoapObject response = (SoapObject) envelope.bodyIn;
+                Vector<?> responseVector = (Vector<?>) response.getProperty(0);
+
+                CantTalleres=responseVector.size();
+
+                for (int i = 0; i <responseVector.size(); ++i) {
+                    SoapObject datos =(SoapObject)responseVector.get(i);
+
+                    String puntaje;
+                    try{
+                        puntaje = datos.getProperty("Puntaje").toString();
+                    }
+                    catch(Exception e){
+                        puntaje = "0";
+                    }
+                    if(!puntaje.equals("0")){
+                        CantTalleresReal++;
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("Respuesta", "excepción");
+                Log.i("Respuesta",e.toString());
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            startActivity(new Intent(getApplicationContext(),PerfilActivity.class));
+        }
+    }
+
 }
