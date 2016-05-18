@@ -8,11 +8,13 @@ public class Taller {
     private int idTaller;
     private String title;
     private String urlImagen;
+    private String puntaje;
 
-    public Taller(String title, String idTaller, String urlImagen) {
+    public Taller(String title, String idTaller, String urlImagen, String puntaje) {
         this.title = title;
         this.idTaller = Integer.parseInt(idTaller);
         this.urlImagen = urlImagen;
+        this.puntaje = puntaje;
     }
 
     public int getIdTaller() {
@@ -37,5 +39,13 @@ public class Taller {
 
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
+    }
+
+    public String getPuntaje() {
+        return puntaje;
+    }
+
+    public void setPuntaje(String puntaje) {
+        this.puntaje = puntaje;
     }
 }

@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_talleres"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Talleres" />
+            android:title="Tutoriales" />
         <item
             android:id="@+id/nav_manuales"
             android:icon="@drawable/ic_menu_manage"

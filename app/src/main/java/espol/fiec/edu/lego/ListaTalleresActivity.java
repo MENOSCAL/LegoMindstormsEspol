@@ -42,7 +42,7 @@ public class ListaTalleresActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_list_talleres);
 
         mToolbar = (Toolbar) findViewById(R.id.tb_main);
-        mToolbar.setTitle("Talleres");
+        mToolbar.setTitle("Tutoriales");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -53,7 +53,7 @@ public class ListaTalleresActivity  extends AppCompatActivity {
 
         for(int i=0; i<listTalleres.size(); i++){
             Taller taller = listTalleres.get(i);
-            addTaller(layoutParent, taller.getTitle(), taller.getIdTaller(), taller.getUrlImagen(),"50");
+            addTaller(layoutParent, taller.getTitle(), taller.getIdTaller(), taller.getUrlImagen(), taller.getPuntaje());
         }
     }
 

@@ -201,8 +201,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                         puntaje += 20;
                     }
 
-                    Toast.makeText(getApplicationContext(), "Su calificación final fue de "+puntaje+"/100", Toast.LENGTH_SHORT).show();
-
                     wsConf = (WebServicesConfiguration) getApplicationContext();
 
                     insertTallerUserTask = new InsertUserTallerTask();
@@ -211,6 +209,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                     //Regreso al menú principal
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                     startActivity(i);
+
+                    Toast.makeText(getApplicationContext(), "Su calificación final fue de "+puntaje+"/100", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -297,7 +297,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
-                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_RESPUESTAS(), envelope);
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 Vector<?> responseVector = (Vector<?>) response.getProperty(0);
 
@@ -402,7 +402,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
-                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_INSERT_USER_TALLER(), envelope);
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 //Vector<?> responseVector = (Vector<?>) response.getProperty(0);
 

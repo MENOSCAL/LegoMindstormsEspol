@@ -152,7 +152,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
-                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_IMAGEN_TALLER(), envelope);
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 Vector<?> responseVector = (Vector<?>) response.getProperty(0);
 

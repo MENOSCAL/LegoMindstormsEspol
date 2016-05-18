@@ -21,6 +21,7 @@ public class WebServicesConfiguration extends Application {
     private String METHOD_GET_RESPUESTAS = "get_respuestas";
     private String METHOD_GET_IMAGEN_TALLER = "get_imagen_taller";
     private String METHOD_INSERT_USER_TALLER = "insert_user_taller";
+    private String METHOD_GET_TALLER_BY_USER= "get_talleres_by_user";
 
     //Getters
     public String getNAMESPACE() {
@@ -69,5 +70,9 @@ public class WebServicesConfiguration extends Application {
 
     public String getMETHOD_INSERT_USER_TALLER() {
         return METHOD_INSERT_USER_TALLER;
+    }
+
+    public String getMETHOD_GET_TALLER_BY_USER() {
+        return METHOD_GET_TALLER_BY_USER;
     }
 }

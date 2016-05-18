@@ -144,20 +144,29 @@ public class MenuActivity extends AppCompatActivity
             try {
                 //Configuración del web service a consumir
                 HttpTransportSE httpTransport = new HttpTransportSE(wsConf.getURL());
-                SoapObject request = new SoapObject(wsConf.getNAMESPACE(), wsConf.getMETHOD_GET_TALLERES());
-
-                System.out.println("Id Logged User: " + LoginOwnActivity.idLoggedUser);
+                SoapObject request = new SoapObject(wsConf.getNAMESPACE(),wsConf.getMETHOD_GET_TALLER_BY_USER());
+                //Agregando parametros del método
+                request.addProperty("idUser",LoginOwnActivity.idLoggedUser);
 
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
-                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLERES(), envelope);
+                httpTransport.call(wsConf.getSOAP_ACTION() + wsConf.getMETHOD_GET_TALLER_BY_USER(), envelope);
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 Vector<?> responseVector = (Vector<?>) response.getProperty(0);
 
                 for (int i = 0; i <responseVector.size(); ++i) {
                     SoapObject datos =(SoapObject)responseVector.get(i);
-                    listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString(),datos.getProperty("Image").toString()));
+
+                    String puntaje;
+                    try{
+                        puntaje = datos.getProperty("Puntaje").toString();
+                    }
+                     catch(Exception e){
+                        puntaje = "0";
+                     }
+
+                     listTalleres.add(new Taller(datos.getProperty("Title").toString(),datos.getProperty("idTaller").toString(),datos.getProperty("Image").toString(), puntaje));
                 }
 
             } catch (Exception e) {
@@ -167,7 +176,6 @@ public class MenuActivity extends AppCompatActivity
                 return false;
             }
 
-            // TODO: register the new account here.
             return true;
         }
 
