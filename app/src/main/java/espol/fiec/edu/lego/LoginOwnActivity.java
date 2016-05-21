@@ -360,14 +360,8 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     SoapObject datos =(SoapObject)responseVector.get(i);
                     String id          = datos.getProperty("idUser").toString();
                     String name    = datos.getProperty("Name").toString();
-                    String username    = datos.getProperty("Username").toString();
                     String email       = datos.getProperty("Email").toString();
                     String password    = datos.getProperty("Password").toString();
-
-                    //person = new Person();
-                    //person.setName(name);
-                    //person.setUsername(username);
-
                     nameS=name;
                     idLoggedUser=id;
 

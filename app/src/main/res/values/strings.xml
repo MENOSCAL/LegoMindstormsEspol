@@ -20,7 +20,7 @@
     <string name="next">Next</string>
 
     <string name="facebook_app_id">233870326962690</string>
-    <string name="title_activity_login_own">Sign in</string>
+    <string name="title_activity_login_own">Tutoriales EV3</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Correo</string>
