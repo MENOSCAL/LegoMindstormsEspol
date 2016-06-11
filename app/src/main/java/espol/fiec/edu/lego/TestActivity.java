@@ -25,6 +25,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import espol.fiec.edu.lego.domain.Pregunta;
+import espol.fiec.edu.lego.domain.PreguntaRespuesta;
 import espol.fiec.edu.lego.domain.Respuesta;
 
 /**
@@ -58,6 +59,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Respuesta> listRespuestasPreg4;
     private ArrayList<Respuesta> listRespuestasPreg5;
 
+    public static ArrayList<PreguntaRespuesta> listaRespuestasCorrectas;
+    public static ArrayList<PreguntaRespuesta> listaRespuestasRespondidas;
+
     private GetPreguntasTask getPreguntasTask;
     private GetRespuestasTask getRespuestasTask;
     private InsertUserTallerTask insertTallerUserTask;
@@ -75,6 +79,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         mToolbar.setTitle("Test "+ tallerName);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        listaRespuestasCorrectas =  new ArrayList<PreguntaRespuesta>();
+        listaRespuestasRespondidas =  new ArrayList<PreguntaRespuesta>();
 
         listPreguntas =  new ArrayList<Pregunta>();
         listRespuestasPreg1 = new ArrayList<Respuesta>();
@@ -132,6 +139,40 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return false;
+    }
+
+    public ArrayList<PreguntaRespuesta> getRespuestasCorrectas(){
+
+        ArrayList<PreguntaRespuesta> respuestasCorrectas = new ArrayList<PreguntaRespuesta>();
+
+        PreguntaRespuesta pregResp1 = new PreguntaRespuesta(listPreguntas.get(0).getName(), getRespuestaCorrecta(listRespuestasPreg1));
+        respuestasCorrectas.add(pregResp1);
+
+        PreguntaRespuesta pregResp2 = new PreguntaRespuesta(listPreguntas.get(1).getName(), getRespuestaCorrecta(listRespuestasPreg2));
+        respuestasCorrectas.add(pregResp2);
+
+        PreguntaRespuesta pregResp3 = new PreguntaRespuesta(listPreguntas.get(2).getName(), getRespuestaCorrecta(listRespuestasPreg3));
+        respuestasCorrectas.add(pregResp3);
+
+        PreguntaRespuesta pregResp4 = new PreguntaRespuesta(listPreguntas.get(3).getName(), getRespuestaCorrecta(listRespuestasPreg4));
+        respuestasCorrectas.add(pregResp4);
+
+        PreguntaRespuesta pregResp5 = new PreguntaRespuesta(listPreguntas.get(4).getName(), getRespuestaCorrecta(listRespuestasPreg5));
+        respuestasCorrectas.add(pregResp5);
+
+        return respuestasCorrectas;
+    }
+
+    public String getRespuestaCorrecta(ArrayList<Respuesta> listRespuestas){
+
+        for(int i=0; i<listRespuestas.size(); i++){
+            Respuesta respuesta = listRespuestas.get(i);
+
+            if(respuesta.isValido()){
+                return respuesta.getName();
+            }
+        }
+        return null;
     }
 
     public ArrayList<Respuesta> shuffleListRespuestaoptions(ArrayList<Respuesta> listRespuestas){
@@ -206,8 +247,33 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                     insertTallerUserTask = new InsertUserTallerTask();
                     insertTallerUserTask.execute((Void) null);
 
-                    //Regreso al menú principal
-                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                    //Guardo las respuestas que el usuario respondió
+                    PreguntaRespuesta pregResp1 = new PreguntaRespuesta(listPreguntas.get(0).getName(), resp1);
+                    listaRespuestasRespondidas.add(pregResp1);
+
+                    PreguntaRespuesta pregResp2 = new PreguntaRespuesta(listPreguntas.get(1).getName(), resp2);
+                    listaRespuestasRespondidas.add(pregResp2);
+
+                    PreguntaRespuesta pregResp3 = new PreguntaRespuesta(listPreguntas.get(2).getName(), resp3);
+                    listaRespuestasRespondidas.add(pregResp3);
+
+                    PreguntaRespuesta pregResp4 = new PreguntaRespuesta(listPreguntas.get(3).getName(), resp4);
+                    listaRespuestasRespondidas.add(pregResp4);
+
+                    PreguntaRespuesta pregResp5 = new PreguntaRespuesta(listPreguntas.get(4).getName(), resp5);
+                    listaRespuestasRespondidas.add(pregResp5);
+
+
+                    //Aqui antes de ir a la siguiente activity, debo guardar en un arreglo las respuestas del usuario y las correctas en otro arreglo
+                    listaRespuestasCorrectas = getRespuestasCorrectas();
+
+                    //Me dirijo a la pantalla de retroalimentación
+                    Intent i = new Intent(getApplicationContext(), RetroalimentacionActivity.class);
+
+                    Bundle bolsa=new Bundle();
+                    bolsa.putInt("puntajeKey", puntaje);
+                    i.putExtras(bolsa);
+
                     startActivity(i);
 
                     Toast.makeText(getApplicationContext(), "Su calificación final fue de "+puntaje+"/100", Toast.LENGTH_SHORT).show();

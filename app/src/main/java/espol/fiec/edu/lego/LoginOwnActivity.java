@@ -30,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -77,7 +78,7 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
 
     private Person person;
     public static String nameS;
-    public static String idLoggedUser;
+    public static String idLoggedUser="";
 
     //Web services
     private WebServicesConfiguration wsConf = null;
@@ -366,9 +367,12 @@ public class LoginOwnActivity extends AppCompatActivity implements LoaderCallbac
                     idLoggedUser=id;
 
                 }
-                if(responseVector != null){
+                if(responseVector != null && !idLoggedUser.equals("")){
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                     startActivity(i);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "El correoo y contraseña no coinciden, vuelva a intentar", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (Exception e) {

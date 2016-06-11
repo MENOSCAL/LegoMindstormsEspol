@@ -7,9 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.ksoap2.serialization.SoapObject;
@@ -35,6 +38,10 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
     private String tallerName;
     private int idTaller;
 
+    private TextView tvIrNumeroPagina;
+    private EditText etNumeroPagina;
+    private Button btnIrAPagina;
+
     private WebServicesConfiguration wsConf;
     private ArrayList<ImagenTaller> listImagenesTaller;
     private GetImagenesTallerTask getImagenesTallerTask;
@@ -53,7 +60,12 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        etNumeroPagina = (EditText) findViewById(R.id.etNumeroPagina);
+        btnIrAPagina = (Button) findViewById(R.id.btnIrAPagina);
+
         txtIniciarTaller = (TextView) findViewById(R.id.txtIniciarTest);
+        tvIrNumeroPagina = (TextView) findViewById(R.id.tvIrNumeroPagina);
 
         btnAnterior = (Button) findViewById(R.id.btnAnterior);
         btnAnterior.setEnabled(false);
@@ -70,6 +82,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
 
         btnAnterior.setOnClickListener(this);
         btnSiguiente.setOnClickListener(this);
+        btnIrAPagina.setOnClickListener(this);
 
         txtIniciarTaller.setOnClickListener(this);
     }
@@ -88,6 +101,8 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btnSiguiente:{
                 viewFlipperInstrucciones.showNext();
 
+                tvIrNumeroPagina.setText((viewFlipperInstrucciones.getDisplayedChild()+1)+"/"+listImagenesTaller.size());
+
                 if(viewFlipperInstrucciones.getDisplayedChild() == (listImagenesTaller.size() -1)){
                     btnSiguiente.setEnabled(false);
                     txtIniciarTaller.setVisibility(View.VISIBLE);
@@ -105,6 +120,8 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btnAnterior: {
                 viewFlipperInstrucciones.showPrevious();
 
+                tvIrNumeroPagina.setText((viewFlipperInstrucciones.getDisplayedChild()+1)+"/"+listImagenesTaller.size());
+
                 if(viewFlipperInstrucciones.getDisplayedChild() != (listImagenesTaller.size() -1)){
                     btnSiguiente.setEnabled(true);
                     txtIniciarTaller.setVisibility(View.GONE);
@@ -114,6 +131,39 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
                     btnAnterior.setEnabled(false);
                 } else {
                     btnSiguiente.setEnabled(true);
+                }
+                break;
+            }
+            case R.id.btnIrAPagina:{
+                //Lineas para ocultar el teclado virtual (Hide keyboard)
+                InputMethodManager imm = (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etNumeroPagina.getWindowToken(), 0);
+
+
+                int numeroPagina = Integer.parseInt(etNumeroPagina.getText().toString());
+
+                if(numeroPagina <= 0 || numeroPagina > listImagenesTaller.size()){
+                    Toast.makeText(getApplicationContext(), "Ingrese un numero dentro del rango 1 - "+listImagenesTaller.size(), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    etNumeroPagina.setText("");
+                    viewFlipperInstrucciones.setDisplayedChild(numeroPagina-1);
+                    tvIrNumeroPagina.setText((viewFlipperInstrucciones.getDisplayedChild()+1)+"/"+listImagenesTaller.size());
+
+                    if(numeroPagina == listImagenesTaller.size()){
+                        btnSiguiente.setEnabled(false);
+                        txtIniciarTaller.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        btnSiguiente.setEnabled(true);
+                        txtIniciarTaller.setVisibility(View.GONE);
+                    }
+
+                    if (numeroPagina == 1) {
+                        btnAnterior.setEnabled(false);
+                    } else {
+                        btnAnterior.setEnabled(true);
+                    }
                 }
                 break;
             }
@@ -176,6 +226,7 @@ public class TallerActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(final Boolean success) {
 
+            tvIrNumeroPagina.setText("1/"+listImagenesTaller.size());
             for(int i=0; i<listImagenesTaller.size(); i++){
                 ImagenTaller imagenTaller = listImagenesTaller.get(i);
                 //Pregunta preg = listPreguntas.get(i);
