@@ -106,7 +106,8 @@ function get_bloques(){
                 'idBloque'              => $row['idBloque'],
                 'Category_idCategory'   => $row['Category_idCategory'],
                 'Title'                 => $row['Title'],
-                'Description'           => $row['Description']
+                'Description'           => $row['Description'],
+                'Image'                 => $row['Image']
             );
         }
     }
@@ -122,13 +123,15 @@ function get_talleres(){
     if (!$result){
         $response[] = array(
             'idTaller'    => '',
-            'Title'  => 'Error en consulta -> '. mysqli_error($connection));
+            'Title'    => '',
+            'Image'  => 'Error en consulta -> '. mysqli_error($connection));
     }
     else{
         while ($row = mysqli_fetch_array($result)){
             $response[] = array(
                 'idTaller'    => $row['idTaller'],
-                'Title'          => $row['Title']
+                'Title'    => $row['Title'],
+                'Image'     => $row['Image']
             );
         }
     }
@@ -227,4 +230,114 @@ function insert_user_taller($idUser, $idTaller, $puntaje){
     return $response;
 }
 
-//var_dump(get_preguntas('1'));
+function validar_user($email){
+    $connection = db_connect();
+    $response = '';
+    $query = "SELECT * FROM User WHERE Email = '$email';";
+    $result = mysqli_query($connection, $query);
+    if (!$result){
+        return '0';
+    }
+    else{
+        $row_cnt = $result->num_rows;
+        if($row_cnt > 0){
+            $response = '1';
+        }
+        else{
+            $response = '0';
+        }
+    }
+    mysqli_close($connection);
+    return $response;
+}
+
+function get_taller_por_usuario_taller($idUser, $idTaller){
+    $connection = db_connect();
+    $response = array();
+    $query = "SELECT * FROM User_has_Taller WHERE User_idUser = '$idUser' AND Taller_idTaller = '$idTaller';";
+    $result = mysqli_query($connection, $query);
+    if (!$result){
+        $response[] = array(
+            'id_User_has_taller'    => '',
+            'User_idUser'           => '',
+            'Taller_idTaller'       => '',
+            'Puntaje'               => 'Error en consulta -> '. mysqli_error($connection));
+    }
+    else{
+        while ($row = mysqli_fetch_array($result)){
+            $response[] = array(
+                'id_User_has_taller'    => $row['id_User_has_taller'],
+                'User_idUser'           => $row['User_idUser'],
+                'Taller_idTaller'       => $row['Taller_idTaller'],
+                'Puntaje'               => $row['Puntaje']
+            );
+        }
+    }
+    mysqli_close($connection);
+    return $response;
+}
+
+function get_taller_por_usuario($idUser){
+    $connection = db_connect();
+    $response = array();
+    $query = "SELECT * FROM User_has_Taller WHERE User_idUser = '$idUser';";
+    $result = mysqli_query($connection, $query);
+    if (!$result){
+        $response[] = array(
+            'id_User_has_taller'    => '',
+            'User_idUser'           => '',
+            'Taller_idTaller'       => '',
+            'Puntaje'               => 'Error en consulta -> '. mysqli_error($connection));
+    }
+    else{
+        while ($row = mysqli_fetch_array($result)){
+            $response[] = array(
+                'id_User_has_taller'    => $row['id_User_has_taller'],
+                'User_idUser'           => $row['User_idUser'],
+                'Taller_idTaller'       => $row['Taller_idTaller'],
+                'Puntaje'               => $row['Puntaje']
+            );
+        }
+    }
+    mysqli_close($connection);
+    return $response;
+}
+
+function get_talleres_by_user($idUser){
+    $connection = db_connect();
+    $response = array();
+    $query = "SELECT * FROM Taller t1 "
+	    ."LEFT JOIN (SELECT * FROM "
+	    ."(SELECT * FROM User_has_Taller "
+	    ."WHERE User_idUser= '$idUser' "
+	    ."ORDER  BY(Taller_idTaller), Puntaje DESC, User_idUser) x "
+	    ."GROUP BY(Taller_idTaller)) t2 ON t1.idTaller=t2.Taller_idTaller;";
+    $result = mysqli_query($connection, $query);
+    if (!$result){
+        $response[] = array(
+            'idTaller'    		=> '',
+            'Title'           		=> '',
+            'Image'       		=> '',
+            'id_User_has_taller'       	=> '',
+            'User_idUser'       	=> '',
+            'Taller_idTaller'       	=> '',
+            'Puntaje'               	=> 'Error en consulta -> '. mysqli_error($connection));
+    }
+    else{
+        while ($row = mysqli_fetch_array($result)){
+            $response[] = array(
+                'idTaller'    		=> $row['idTaller'],
+                'Title'    		=> $row['Title'],
+                'Image'    		=> $row['Image'],
+                'id_User_has_taller'    => $row['id_User_has_taller'],
+                'User_idUser'           => $row['User_idUser'],
+                'Taller_idTaller'       => $row['Taller_idTaller'],
+                'Puntaje'               => $row['Puntaje']
+            );
+        }
+    }
+    mysqli_close($connection);
+    return $response;
+}
+
+

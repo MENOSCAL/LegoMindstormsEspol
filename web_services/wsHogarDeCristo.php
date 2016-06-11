@@ -129,7 +129,8 @@ $soapServer->wsdl->addComplexType(
         'idBloque'              => array('name' => 'idBloque', 'type' => 'xsd:string'),
         'Category_idCategory'   => array('name' => 'Category_idCategory', 'type' => 'xsd:string'),
         'Title'                 => array('name' => 'Title', 'type' => 'xsd:string'),
-        'Description'           => array('name' => 'Description', 'type' => 'xsd:string')));
+        'Description'           => array('name' => 'Description', 'type' => 'xsd:string'),
+        'Image'                 => array('name' => 'Image', 'type' => 'xsd:string')));
 
 $soapServer->wsdl->addComplexType(
     'arrayBloque',
@@ -171,7 +172,8 @@ $soapServer->wsdl->addComplexType(
     '',
     array(
         'idTaller'    => array('name' => 'idTaller', 'type' => 'xsd:string'),
-        'Title'          => array('name' => 'Title', 'type' => 'xsd:string'))
+        'Title'    => array('name' => 'Title', 'type' => 'xsd:string'),
+        'Image'          => array('name' => 'Image', 'type' => 'xsd:string'))
 );
 // Define array
 $soapServer->wsdl->addComplexType(
@@ -355,7 +357,137 @@ $soapServer->register(
     //Documentation
     '');
 
+////////////////////////////////////////////////
+$soapServer->register(
+//Name
+    'validar_user',
+    //Input:Parameter
+    array('email' => 'xsd:string'),
+    //Output:Return
+    array('return' => 'xsd:string'),
+    //NameSpace
+    'urn:HogarDeCristo',
+    //SoapAction
+    'urn:HogarDeCristo#validar_user',
+    //Style
+    'rpc',
+    //Use
+    'encoded',
+    //Documentation
+    '');
 
+////////////////////////////////////////////////
+// Define the struct data type
+$soapServer->wsdl->addComplexType(
+//Name
+    'structUserTaller',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'id_User_has_taller'    => array('name' => 'id_User_has_taller'     , 'type' => 'xsd:string'),
+        'User_idUser'           => array('name' => 'User_idUser', 'type' => 'xsd:string'),
+        'Taller_idTaller'       => array('name' => 'Taller_idTaller', 'type' => 'xsd:string'),
+        'Puntaje'               => array('name' => 'Puntaje'           , 'type' => 'xsd:string'))
+);
+// Define array
+$soapServer->wsdl->addComplexType(
+    'arrayUserTaller',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType','wsdl:arrayType' => 'tns:structUserTaller[]')),
+    'tns:structUserTaller'
+);
+// Registering the method
+$soapServer->register(
+//Name
+    'get_taller_por_usuario_taller',
+    //Input:Parameter
+    array('idUser' => 'xsd:string','idTaller' => 'xsd:string'),
+    //Output:Return
+    array('return' => 'tns:arrayUserTaller'),
+    //NameSpace
+    'urn:HogarDeCristo',
+    //SoapAction
+    'urn:HogarDeCristo#get_taller_por_usuario_taller',
+    //Style
+    'rpc',
+    //Use
+    'encoded',
+    //Documentation
+    'Lista de preguntas.');
+
+
+// Registering the method
+$soapServer->register(
+//Name
+    'get_taller_por_usuario',
+    //Input:Parameter
+    array('idUser' => 'xsd:string'),
+    //Output:Return
+    array('return' => 'tns:arrayUserTaller'),
+    //NameSpace
+    'urn:HogarDeCristo',
+    //SoapAction
+    'urn:HogarDeCristo#get_taller_por_usuario',
+    //Style
+    'rpc',
+    //Use
+    'encoded',
+    //Documentation
+    'Lista de preguntas.');
+
+////////////////////////////////////////////////
+// Define the struct data type
+$soapServer->wsdl->addComplexType(
+//Name
+    'structJoin',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'idTaller'    		=> array('name' => 'idTaller'     , 'type' => 'xsd:string'),
+        'Title'    		=> array('name' => 'Title'     , 'type' => 'xsd:string'),
+        'Image'    		=> array('name' => 'Image'     , 'type' => 'xsd:string'),
+        'id_User_has_taller'    => array('name' => 'id_User_has_taller'     , 'type' => 'xsd:string'),
+        'User_idUser'           => array('name' => 'User_idUser', 'type' => 'xsd:string'),
+        'Taller_idTaller'       => array('name' => 'Taller_idTaller', 'type' => 'xsd:string'),
+        'Puntaje'               => array('name' => 'Puntaje'           , 'type' => 'xsd:string'))
+);
+// Define array
+$soapServer->wsdl->addComplexType(
+    'arrayJoin',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType','wsdl:arrayType' => 'tns:structJoin[]')),
+    'tns:structJoin'
+);
+// Registering the method
+$soapServer->register(
+//Name
+    'get_talleres_by_user',
+    //Input:Parameter
+    array('idUser' => 'xsd:string'),
+    //Output:Return
+    array('return' => 'tns:arrayJoin'),
+    //NameSpace
+    'urn:HogarDeCristo',
+    //SoapAction
+    'urn:HogarDeCristo#get_talleres_by_user',
+    //Style
+    'rpc',
+    //Use
+    'encoded',
+    //Documentation
+    '');
 
 
 $HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';       
