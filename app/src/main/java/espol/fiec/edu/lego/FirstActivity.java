@@ -61,9 +61,9 @@ public class FirstActivity extends AppCompatActivity implements NavigationView.O
             //mAuthTask.execute((Void) null);
         }
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("ALL Bloques");
-        mToolbar.setLogo(R.drawable.ic_launcher);
+        mToolbar = (Toolbar) findViewById(R.id.tb_main);
+        mToolbar.setTitle("Todos los Bloques");
+        //mToolbar.setLogo(R.drawable.ic_launcher);
 
         setSupportActionBar(mToolbar);
 

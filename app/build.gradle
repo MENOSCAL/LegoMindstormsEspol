@@ -35,7 +35,7 @@ android {
 
     defaultConfig {
         applicationId "espol.fiec.edu.lego"
-        minSdkVersion 18
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -75,7 +75,6 @@ dependencies {
     compile 'com.google.code.ksoap2-android:ksoap2-android:3.1.1'
     compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     compile 'com.jakewharton:butterknife:7.0.1'
-
 
 }
 
