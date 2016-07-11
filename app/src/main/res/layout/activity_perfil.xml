@@ -33,6 +33,7 @@
 
                     <TextView
                         android:layout_marginTop="5dp"
+                        android:layout_marginLeft="20dp"
                         android:textColor="@color/colorPrimarytext"
                         android:textAlignment="center"
                         android:layout_width="match_parent"
