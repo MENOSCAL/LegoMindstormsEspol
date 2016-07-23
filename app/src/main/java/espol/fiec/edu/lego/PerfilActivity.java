@@ -27,7 +27,7 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        mToolbar = (Toolbar) findViewById(R.id.tb_perfil);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         String name= LoginOwnActivity.nameS;
 

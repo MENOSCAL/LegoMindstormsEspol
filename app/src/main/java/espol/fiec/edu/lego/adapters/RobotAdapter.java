@@ -78,15 +78,24 @@ public class RobotAdapter extends RecyclerView.Adapter<RobotAdapter.MyViewHolder
 */
 
         //new ImageLoad("http://www.corporacionsmartest.com/lego_mindstorm/bloques/"+mList.get(position).getUrl()+".jpg" , holder.ivRobot, mContext, width, height).execute();
-        new ImageLoad(mList.get(position).getUrl() , holder.ivRobot, mContext, width, height).execute();
+ //esto de abajo es la que funciona
+ //       new ImageLoad(mList.get(position).getUrl() , holder.ivRobot, mContext, width, height).execute();
 
-        try {
+        /*try {
             YoYo.with(Techniques.Tada)
                     .duration(700)
                     .playOn(holder.itemView);
         }catch (Exception e){
 
-        }
+        }*/
+
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.app);
+        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+
+        bitmap = ImageHelper.getRoundedCornerBitmap(mContext, bitmap, 10, width, height, false, false, true, true);
+        holder.ivRobot.setImageBitmap(bitmap);
+
+
     }
 
     @Override
